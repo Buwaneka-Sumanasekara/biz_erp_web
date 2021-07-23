@@ -17,13 +17,12 @@ use App\Http\Controllers\AuthController;
 */
 
 
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('auth/login', [AuthController::class, 'login']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/logout', [AuthController::class, 'logout']);
-
     Route::prefix("user")->group(function () {
         Route::get('/', [AuthController::class, 'me']);
+        Route::get('/logout', [AuthController::class, 'logout']);
         Route::get('/permissions', [AuthController::class, 'permissions']);
     });  
 });

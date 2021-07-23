@@ -15,6 +15,7 @@ use App\Http\Resources\ErrorResource;
 use App\Http\Resources\LoginResource;
 use App\Http\Resources\GeneralResource;
 use App\Http\Resources\PermissionResource;
+use App\Http\Resources\CurrentUserResource;
 
 use App\Exceptions\AuthenticationException;
 use App\Exceptions\UserNotFoundException;
@@ -57,7 +58,7 @@ class AuthController extends Controller
     public function me(Request $request)
     {
         $currentUser=$request->user();
-        return new UserResource(UmUser::findOrFail($currentUser->id));
+        return new CurrentUserResource(UmUser::findOrFail($currentUser->id));
     }  
     
     public function permissions(Request $request)

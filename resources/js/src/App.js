@@ -11,8 +11,8 @@ const App = () => {
     <ChakraProvider theme={theme}>
     <BrowserRouter>
       <Switch>
-        <Route path="/" component={HomePage} exact />
         <Route path="/login" component={LoginPage} exact />
+        <Route path="/" component={HomePage} exact />
       </Switch>
     </BrowserRouter>
     </ChakraProvider>

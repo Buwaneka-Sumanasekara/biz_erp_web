@@ -6,6 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
 {
+    public static $wrap = 'user';
     /**
      * Transform the resource into an array.
      *
@@ -18,7 +19,6 @@ class UserResource extends JsonResource
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
             'email' => $this->email,
-            //'permissions'=>$this->userRole->permissions
         ];
     }
 
