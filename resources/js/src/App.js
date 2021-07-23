@@ -19,7 +19,7 @@ const App = () => {
     <ChakraProvider theme={theme}>
     <BrowserRouter>
       <Switch>
-        <Route path="/login" component={LoginPage} exact />
+        <RegulerRoute path="/login" component={LoginPage} exact />
         <ProtectedRoute path="/" component={HomePage} exact />
       </Switch>
     </BrowserRouter>
