@@ -1,23 +1,34 @@
 import React, { useEffect } from "react";
+import {connect} from 'react-redux';
 
-import { AuthRepository } from "../../../api";
+import * as UserActions from "../../../redux-states/user/actions";
 
 const LoginPage = (props) => {
   useEffect(() => {
-    login();
+    loginUserNow()
   }, []);
 
-  function login() {
-    AuthRepository.login({ username: "Cashier", password: "123" })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  function loginUserNow() {
+    props.loginUser({username:"Cashier",password:"1234"}).then(res=>{
+      console.log(res)
+    }).catch(er=>{
+      console.log(er.message)
+    })
+     
   }
 
   return <div>{`This is Login page`}</div>;
 };
 
-export default LoginPage;
+
+const mapStateToProps = state => ({
+ 
+});
+const mapDispatchToProps = {
+  loginUser: UserActions.loginUser
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(LoginPage);
