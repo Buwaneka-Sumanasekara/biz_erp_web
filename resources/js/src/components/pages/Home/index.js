@@ -1,33 +1,46 @@
 import React,{useEffect} from "react";
 import { Button, ButtonGroup,useColorMode } from "@chakra-ui/react";
-import { UserRepository } from "../../../api";
+import {connect} from 'react-redux';
 
+import {Header} from "../../UI/organisms";
+
+import * as UserActions from "../../../redux-states/user/actions";
 
 const HomePage = (props) => {
     const { colorMode, toggleColorMode } = useColorMode();
 
     useEffect(() => {
-      getUser()
+   
     }, []);
   
-    function getUser() {
-      UserRepository.user()
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    function logoutUser(){
+      props.logoutUser(resp=>{
+          
+      }).catch(er=>{
+
+      })
     }
 
   return (
-    <div>
+    <Header>
       {`This is home page`}
       <Button  onClick={toggleColorMode} variant="solid">
         Toggle {colorMode === "light" ? "Dark" : "Light"}
       </Button>
-    </div>
+  
+    </Header>
   );
 };
 
-export default HomePage;
+
+const mapStateToProps = state => ({
+ 
+});
+const mapDispatchToProps = {
+  logoutUser:UserActions.logoutUser
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(HomePage);

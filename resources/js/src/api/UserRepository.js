@@ -1,9 +1,12 @@
-import {AuthAxiosInstance} from './config/AxiosClient';
+import { AuthAxiosInstance } from "./config/AxiosClient";
 
-const resource = '/user';
+const resource = "/user";
 
 export default {
-    user() {
-        return AuthAxiosInstance().get(`${resource}/`);
-    }
+  user(token) {
+    return AuthAxiosInstance(token).get(`${resource}`);
+  },
+  logout(token) {
+    return AuthAxiosInstance(token).get(`${resource}/logout`);
+  },
 };

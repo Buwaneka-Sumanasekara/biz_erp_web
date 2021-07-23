@@ -9,7 +9,7 @@ const LoginPage = (props) => {
   }, []);
 
   function loginUserNow() {
-    props.loginUser({username:"Cashier",password:"1234"}).then(res=>{
+    props.loginUser({username:"Cashier",password:"123"}).then(res=>{
       console.log(res)
     }).catch(er=>{
       console.log(er.message)

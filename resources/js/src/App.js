@@ -9,6 +9,8 @@ const {store} = configureStore();
 
 import theme from "./theme";
 
+import {ProtectedRoute,RegulerRoute} from "./components/router-wrappers";
+
 import {HomePage,LoginPage} from "./components/pages";
 
 const App = () => {
@@ -18,7 +20,7 @@ const App = () => {
     <BrowserRouter>
       <Switch>
         <Route path="/login" component={LoginPage} exact />
-        <Route path="/" component={HomePage} exact />
+        <ProtectedRoute path="/" component={HomePage} exact />
       </Switch>
     </BrowserRouter>
     </ChakraProvider>

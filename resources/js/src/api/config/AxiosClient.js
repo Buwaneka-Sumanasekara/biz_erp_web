@@ -1,7 +1,5 @@
 import axios from "axios";
-
-import configureStore from "../../configureStore";
-const {store} = configureStore();
+import { CommonFunctions } from "../../utils";
 
 const baseDomain = "";
 const baseURL = `${baseDomain}/api`; // Incase of /api/v1;
@@ -10,13 +8,12 @@ const AxiosInstance = () => {
   return axios.create({ baseURL, withCredentials: true });
 };
 
-const AuthAxiosInstance = () => {
-  const state = store.getState();
-  const authToken = state.user.token;
-  return axios.create({
-    baseURL,
-    headers: { Authorization: `Bearer ${authToken}` },
-  });
+const AuthAxiosInstance = (token) => {
+    return axios.create({
+      baseURL,
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
 };
 
 export { AxiosInstance, AuthAxiosInstance };
