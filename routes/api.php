@@ -18,6 +18,13 @@ use App\Http\Controllers\AuthController;
 
 
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
-Route::get('/user', [AuthController::class, 'me'])->middleware('auth:sanctum');
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/logout', [AuthController::class, 'logout']);
+
+    Route::prefix("user")->group(function () {
+        Route::get('/', [AuthController::class, 'me']);
+        Route::get('/permissions', [AuthController::class, 'permissions']);
+    });  
+});
+

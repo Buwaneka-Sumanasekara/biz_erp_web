@@ -17,6 +17,7 @@ class UserRoleSeeder extends Seeder
         $ar_user_role=[
             ["id"=>0,"name"=>"super admin"],//default role
             ["id"=>1,"name"=>"admin"],
+            ["id"=>2,"name"=>"cashier"],
         ];
 
         foreach ($ar_user_role as $user_role) {

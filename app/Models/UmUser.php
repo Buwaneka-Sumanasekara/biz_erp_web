@@ -20,6 +20,6 @@ class UmUser extends Authenticatable
     {
         return $this->belongsTo(UmUserRole::class, 'um_user_role_id', 'id');
     }
-    
+   
 
 }

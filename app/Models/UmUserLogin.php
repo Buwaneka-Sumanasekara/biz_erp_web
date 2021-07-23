@@ -15,6 +15,6 @@ class UmUserLogin extends Model
 
     public function user()
     {
-        return $this->hasOne(UmUser::class);
+        return $this->hasOne(UmUser::class,"id","um_user_id");
     }
 }

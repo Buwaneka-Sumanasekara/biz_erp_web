@@ -16,12 +16,14 @@ class UmUserRole extends Model
     protected $fillable = ['id','name'];
     public $incrementing = false;
 
-    public function userRolePermissions()
-    {
-        return $this->hasMany(UmUserRoleHasPmPermissions::class,'um_user_role_id','id');
-    }
+    
     public function users()
     {
         return $this->hasMany(UmUser::class,'um_user_role_id','id');
+    }
+
+    public function permissions()
+    {
+        return $this->belongsToMany(PmPermissions::class,'um_user_role_has_pm_permissions','um_user_role_id',"pm_permissions_id");
     }
 }

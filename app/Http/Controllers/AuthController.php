@@ -7,57 +7,63 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 use App\Models\UmUser;
+use App\Models\UmUserLogin;
 use App\Models\UmUserRoleHasPmPermissions;
 
 use App\Http\Resources\UserResource;
+use App\Http\Resources\ErrorResource;
+use App\Http\Resources\LoginResource;
+use App\Http\Resources\GeneralResource;
+use App\Http\Resources\PermissionResource;
 
+use App\Exceptions\AuthenticationException;
+use App\Exceptions\UserNotFoundException;
+
+use App\Http\Requests\MyJsonRequest;
 
 class AuthController extends Controller
 {
     
-
-    public function register(Request $request)
-    {
-        
-        $user = UmUser::find(0);
-
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-                    'access_token' => $token,
-                    'token_type' => 'Bearer',
-        ]);
-    }
-
     public function login(Request $request)
     {
-        
-        $user = UmUser::find(0);
-
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-                    'access_token' => $token,
-                    'token_type' => 'Bearer',
-        ]);
+        try {
+            $request->validate([
+                'username' => 'required',
+                'password' => 'required'
+            ]); 
+            $userlogin = UmUserLogin::where('username', $request->username)->first();
+            if($userlogin){
+                if(Hash::check($request->get('password'), $userlogin->password)){
+                    $token = $userlogin->user->createToken('auth_token')->plainTextToken;
+                    return new LoginResource((object)["token"=>$token,"user"=>$userlogin->user]);
+                }else{
+                    throw new AuthenticationException();
+                }
+            }else{
+                throw new UserNotFoundException();
+            }    
+        } catch (\Exception $e) {
+            return (new ErrorResource($e));
+        }   
     }
 
     public function logout(Request $request)
     {
-        
        // Revoke the token that was used to authenticate the current request...
         $request->user()->currentAccessToken()->delete();
-
-        return response()->json([
-                    'logout' => true,
-        ]);
+        return new GeneralResource($request);
     }
 
     public function me(Request $request)
     {
         $currentUser=$request->user();
-        $userRolepermissions=UmUserRoleHasPmPermissions::get();
-
         return new UserResource(UmUser::findOrFail($currentUser->id));
-    }       
+    }  
+    
+    public function permissions(Request $request)
+    {
+        $currentUser=$request->user();
+        return new PermissionResource(UmUser::findOrFail($currentUser->id));
+    }  
+    
 }
