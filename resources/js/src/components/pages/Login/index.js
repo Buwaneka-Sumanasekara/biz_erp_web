@@ -35,10 +35,8 @@ const LoginPage = (props) => {
 
   return (
     <AuthTemplate>
-      <Box> 
         <Alert status="error" message={Error} />
         <FormLogin onSubmit={(values)=>onUserLogin(values)} isLoading={isLoading}  />
-      </Box>
     </AuthTemplate>
   );
 };

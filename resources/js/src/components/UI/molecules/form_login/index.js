@@ -59,7 +59,7 @@ const FormLogin = (props) => {
               </FormControl>
             )}
           </Field>
-          <Button isLoading={props.isLoading} type="submit">
+          <Button isLoading={props.isLoading} type="submit"   width="100%">
             Login
           </Button>
         </Form>

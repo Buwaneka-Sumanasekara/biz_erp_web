@@ -12,18 +12,15 @@ const AuthTemplate = (props) => {
   const { children } = props;
 
   return (
-    <BSContainer className={"container-md"}>
+    <BSContainer className={"container-md screen-full"}>
       <BSRow className={"auth-wrapper my-auto"}>
-        <BSCol col={"4"} className={"px-0"} >
-          <Box h="100%" bg={`${Globals.DEFAULT_THEME}.900`}>
-            
-          </Box>
+        <BSCol col={"4"} className={"px-0"}>
+          <Box h="100%" bg={`${Globals.DEFAULT_THEME}.900`}></Box>
         </BSCol>
-        <BSCol col={"8"} className={"p-5"}>
-        <Box h="100%" bg={`${Globals.DEFAULT_THEME}.0`}>
-        {children}
+        <BSCol col={"8"} >
+          <Box h="100%" bg={`${Globals.DEFAULT_THEME}.0`} px={"5%"} py={"25%"}>
+            {children}
           </Box>
-         
         </BSCol>
       </BSRow>
     </BSContainer>
