@@ -1,6 +1,6 @@
-import Header from "./Header";
-
+import Header from "./header";
+import BSContainer from "./bs_container";
 
 export {
-    Header
+    Header,BSContainer
 }

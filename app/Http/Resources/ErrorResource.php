@@ -3,7 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Exceptions\AuthenticationException;
-use Exception;
+use App\Exceptions\UserNotFoundException;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -38,6 +38,8 @@ class ErrorResource extends JsonResource
     public function withResponse($request, $response)
     {
         if($this->resource instanceof AuthenticationException){
+            $response->setStatusCode(401);
+        }else if($this->resource instanceof UserNotFoundException){
             $response->setStatusCode(401);
         }else{
             $response->setStatusCode(500);
