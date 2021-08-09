@@ -12,6 +12,7 @@
 ## Run prod
 - npm run prod
 
+php artisan migrate:refresh --seed
 
 ## License
 MIT

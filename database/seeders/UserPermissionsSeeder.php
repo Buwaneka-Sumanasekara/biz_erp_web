@@ -26,18 +26,5 @@ class UserPermissionsSeeder extends Seeder
             ],$data);
         }
 
-        if (App::environment('local')) {
-            $ardata=[
-            ["pm_permissions_id"=>1000,"um_user_role_id"=>config("global.user_role_cashier")],
-            ["pm_permissions_id"=>1001,"um_user_role_id"=>config("global.user_role_cashier")]
-           ];
-           foreach ($ardata as $data) {
-            UmUserRoleHasPmPermissions::updateOrCreate([
-                'um_user_role_id' => $data["um_user_role_id"],
-                'pm_permissions_id' =>$data["pm_permissions_id"]
-            ],$data);
-           }
-           
-        }
     }
 }
