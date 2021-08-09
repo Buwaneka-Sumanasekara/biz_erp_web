@@ -17024,11 +17024,14 @@ var SideMenuComponent = function SideMenuComponent(props) {
   };
 
   function handleClick(e) {
-    console.log("click", e);
     var found = permissions.find(function (element) {
       return element.id == e.key;
     });
-    console.log("found", found);
+
+    if (found && found.url_path !== "") {
+      console.log("click", e);
+      history.push(found.url_path);
+    }
   }
 
   function renderSubMenu(menu) {

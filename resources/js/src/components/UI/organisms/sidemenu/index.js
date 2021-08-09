@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory,Link } from "react-router-dom";
 import { connect } from "react-redux";
+
 
 import * as UserActions from "../../../../redux-states/user/actions";
 
@@ -28,10 +29,14 @@ const SideMenuComponent = (props) => {
   };
 
   function handleClick(e) {
-    console.log("click", e);
+  
 
     const found = permissions.find((element) => (element.id == e.key));
-    console.log("found", found);
+
+    if(found && found.url_path!==""){
+        console.log("click", e);
+        history.push(found.url_path);
+    }
   }
 
   function renderSubMenu(menu) {
