@@ -2,9 +2,13 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Form, Input, Button, Checkbox } from "antd";
 
+
 const FormLogin = (props) => {
+
+  const {isLoading} = props;
+
   const onFinish = (values) => {
-    console.log("Success:", values);
+    props.onSubmit(values);
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -25,7 +29,7 @@ const FormLogin = (props) => {
         name="username"
         rules={[{ required: true, message: "Please input your username!" }]}
       >
-        <Input />
+        <Input disabled={isLoading} />
       </Form.Item>
 
       <Form.Item
@@ -33,11 +37,11 @@ const FormLogin = (props) => {
         name="password"
         rules={[{ required: true, message: "Please input your password!" }]}
       >
-        <Input.Password />
+        <Input.Password  disabled={isLoading}/>
       </Form.Item>
 
       <Form.Item wrapperCol={{ offset: 8, span: 24 }}>
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" loading={isLoading}>
           Submit
         </Button>
       </Form.Item>

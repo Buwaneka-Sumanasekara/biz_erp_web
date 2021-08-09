@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
-
+import { Space } from "antd";
 import AuthTemplate from "../../templates/auth";
 
-import { FormLogin,Alert } from "../../UI/molecules";
+import { FormLogin } from "../../UI/molecules";
+
+import { Alert } from "../../UI/atoms";
 
 import * as UserActions from "../../../redux-states/user/actions";
 
@@ -22,20 +24,30 @@ const LoginPage = (props) => {
   function onUserLogin(values) {
     setLoading(true);
     setError("");
-    props.loginUser({username:values.uname,password:values.pass}).then(res=>{
-      history.push("/");
-    }).catch(er=>{
-      setError(er.message);
-    }).finally(()=>{
-      setLoading(false);
-    })
-
+    props
+      .loginUser({ username: values.username, password: values.password })
+      .then((res) => {
+        history.push("/");
+      })
+      .catch((er) => {
+        setError(er.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   return (
     <AuthTemplate>
-        <Alert status="error" message={Error} />
-        <FormLogin onSubmit={(values)=>onUserLogin(values)} isLoading={isLoading}  />
+ 
+   
+      <Alert status="error" message={Error} />
+    
+      <FormLogin
+        onSubmit={(values) => onUserLogin(values)}
+        isLoading={isLoading}
+      />
+     
     </AuthTemplate>
   );
 };
