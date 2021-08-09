@@ -4,9 +4,9 @@ import { connect } from "react-redux";
 
 import * as UserActions from "../../../../redux-states/user/actions";
 
-import { Layout } from 'antd';
+import { PageHeader } from 'antd';
 
-const { Header, Footer, Sider, Content } = Layout;
+
 
 
 const HeaderComponent = (props) => {
@@ -21,7 +21,11 @@ const HeaderComponent = (props) => {
   }
 
   return (
-    <Header>Header</Header>
+    <PageHeader
+    className="site-page-header"
+    title="Title"
+    subTitle="This is a subtitle"
+  />
   );
 };
 
