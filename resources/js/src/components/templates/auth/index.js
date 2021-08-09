@@ -8,6 +8,7 @@ const AuthTemplate = (props) => {
 
   return (
   <Container>
+    <div>sss</div>
             {children}
     </Container>    
   );

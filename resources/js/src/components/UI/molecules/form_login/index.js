@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Button } from 'antd';
 
 const FormLogin = (props) => {
   const { children, isLoading } = props;
@@ -17,7 +18,11 @@ const FormLogin = (props) => {
   
 
   return (
-    <></>
+    <>
+     <Button type="primary" >
+          Primary
+        </Button>
+    </>
   )
   // return (
   //   <Formik

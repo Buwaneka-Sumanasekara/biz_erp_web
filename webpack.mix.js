@@ -1,4 +1,4 @@
-const mix = require('laravel-mix');
+const mix = require("laravel-mix");
 
 /*
  |--------------------------------------------------------------------------
@@ -11,6 +11,15 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    .react()
-    .sass('resources/sass/app.scss', 'public/css');
+mix
+  .js("resources/js/app.js", "public/js")
+  .react()
+  .sass("resources/sass/app.scss", "public/css")
+  .less("resources/less/app.less", "public/css", {
+    lessOptions: {
+      javascriptEnabled: true,
+      modifyVars: {
+        "primary-color": "#0BD37E",
+      },
+    },
+  });
