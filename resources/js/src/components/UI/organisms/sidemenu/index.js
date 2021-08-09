@@ -6,41 +6,40 @@ import * as UserActions from "../../../../redux-states/user/actions";
 
 import CommonFunctions from "../../../../utils/CommonFunctions";
 
-import { Menu } from "antd";
+import { Menu, Card, Avatar, Typography } from "antd";
+const { Title, Paragraph, Text, Link } = Typography;
 
 const { SubMenu } = Menu;
 
 // submenu keys of first level
 
 const SideMenuComponent = (props) => {
-  const { children, permissions, permissions_uimenu_tree } = props;
+  const { children, permissions, permissions_uimenu_tree, profile } = props;
   let history = useHistory();
   const location = useLocation();
 
-
-  useEffect(()=>{
+  useEffect(() => {
     return getKeyOfCurrentPath();
-  },[children])
-
+  }, [children]);
 
   const [openKeys, setOpenKeys] = useState([]);
-  const [selectedKeys,setSelectedKeys] = useState([]);
-  
+  const [selectedKeys, setSelectedKeys] = useState([]);
 
   const rootSubmenuKeys = permissions.map((value) => value.id);
 
-
-  function getKeyOfCurrentPath(){
-    const url=location.pathname;
+  function getKeyOfCurrentPath() {
+    const url = location.pathname;
     const found = permissions.find((element) => element.url_path == url);
     setSelectedKeys([`${found.id}`]);
-    setTimeout(()=>{
-     const arParents=CommonFunctions.getAllParentsOfTree(permissions,found,[`${found.id}`])
+    setTimeout(() => {
+      const arParents = CommonFunctions.getAllParentsOfTree(
+        permissions,
+        found,
+        [`${found.id}`]
+      );
       setOpenKeys(arParents);
-     
-    },500);
+    }, 500);
   }
-  
 
   const onOpenChange = (keys) => {
     const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
@@ -84,28 +83,35 @@ const SideMenuComponent = (props) => {
     }
   }
 
+  const Acronym=CommonFunctions.getAcronym(`${profile.firstname} ${profile.lastname}`);
   return (
-    <Menu
-      mode="inline"
-      openKeys={openKeys}
-      onOpenChange={onOpenChange}
-      onClick={handleClick}
-      selectedKeys={selectedKeys}
-    >
-      {permissions_uimenu_tree
-        .sort((a, b) => {
-          return a.order < b.order ? -1 : 1;
-        })
-        .map((menu, i) => renderSubMenu(menu))}
-    </Menu>
+    <>
+      <Card style={{ justifyContent: "center", display: "flex",textAlign:"center" }}>
+      <Title level={5}>{`~ ${CommonFunctions.generateGreetings()} ~`}</Title>
+        <Avatar size="large"  style={{ backgroundColor: CommonFunctions.getAcronymColor(Acronym), verticalAlign: 'middle' }}>{Acronym}</Avatar>
+        <Title level={4}>{`${profile.firstname} ${profile.lastname}`}</Title>
+      </Card>
+      <Menu
+        mode="inline"
+        openKeys={openKeys}
+        onOpenChange={onOpenChange}
+        onClick={handleClick}
+        selectedKeys={selectedKeys}
+      >
+        {permissions_uimenu_tree
+          .sort((a, b) => {
+            return a.order < b.order ? -1 : 1;
+          })
+          .map((menu, i) => renderSubMenu(menu))}
+      </Menu>
+    </>
   );
-
-
 };
 
 const mapStateToProps = (state) => ({
   permissions_uimenu_tree: state.user.permissions_uimenu_tree,
   permissions: state.user.permissions,
+  profile: state.user.profile,
 });
 const mapDispatchToProps = {
   logoutUser: UserActions.logoutUser,

@@ -46,6 +46,7 @@ export function getUser() {
       dispatch({
         type: "USER_SET_PROFILE",
         permissions: userData.permissions,
+        profile:userData.user,
         permissions_tree:CommonFunctions.getTreeStructure(userData.permissions),
         permissions_uimenu_tree:CommonFunctions.getTreeStructure(ar_menu_permissions)
       });
