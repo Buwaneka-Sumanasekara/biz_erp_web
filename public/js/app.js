@@ -15037,6 +15037,15 @@ function ProtectedRoute(props) {
       setLoading(false);
     }
   }, [isRehydrated]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    if (!isLoading) {
+      getUserInfo();
+    }
+  }, [isLoading]);
+
+  function getUserInfo() {
+    props.getUser();
+  }
 
   if (isLoading) {
     return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
@@ -15132,15 +15141,6 @@ function RegulerRoute(props) {
 
     return;
   }, [isRehydrated]);
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    if (!isLoading) {
-      getUserInfo();
-    }
-  }, [isLoading]);
-
-  function getUserInfo() {
-    props.getUser();
-  }
 
   if (isLoading) {
     return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
@@ -15636,7 +15636,8 @@ function getUser() {
               userData = apiResponse.data;
               dispatch({
                 type: "USER_SET_PROFILE",
-                permissions: userData.permissions
+                permissions: userData.permissions,
+                permissions_tree: _utils__WEBPACK_IMPORTED_MODULE_2__.CommonFunctions.getTreeStructure(userData.permissions)
               });
               dispatch({
                 type: "USER_SET_AUTHENTICATED",
@@ -15746,6 +15747,7 @@ var initialState = {
   token: "",
   profile: {},
   permissions: [],
+  permissions_tree: [],
   isAuthenticated: false
 };
 function appReducer() {
@@ -15766,7 +15768,8 @@ function appReducer() {
     case "USER_SET_PROFILE":
       return _objectSpread(_objectSpread({}, state), {}, {
         profile: action.profile,
-        permissions: action.permissions
+        permissions: action.permissions,
+        permissions_tree: action.permissions_tree
       });
 
     default:
@@ -15800,6 +15803,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -15843,8 +15852,23 @@ function _getAccessTokenByState() {
   return _getAccessTokenByState.apply(this, arguments);
 }
 
+function getTreeStructure(dataset) {
+  var hashTable = Object.create(null);
+  dataset.forEach(function (aData) {
+    return hashTable[aData.id] = _objectSpread(_objectSpread({}, aData), {}, {
+      childNodes: []
+    });
+  });
+  var dataTree = [];
+  dataset.forEach(function (aData) {
+    if (aData.id !== aData.parent_id) hashTable[aData.parent_id].childNodes.push(hashTable[aData.id]);else dataTree.push(hashTable[aData.id]);
+  });
+  return dataTree;
+}
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  getAccessTokenByState: getAccessTokenByState
+  getAccessTokenByState: getAccessTokenByState,
+  getTreeStructure: getTreeStructure
 });
 
 /***/ }),

@@ -2,6 +2,7 @@ export const initialState = {
   token: "",
   profile: {},
   permissions:[],
+  permissions_tree:[],
   isAuthenticated:false
 };
 
@@ -21,7 +22,8 @@ export default function appReducer(state = initialState, action) {
       return {
         ...state,
         profile: action.profile,
-        permissions:action.permissions
+        permissions:action.permissions,
+        permissions_tree:action.permissions_tree
       };
     default:
       return state;

@@ -34,6 +34,7 @@ export function loginUser(obj) {
 export function getUser() {
   return async (dispatch, getState) => {
     try {
+ 
       const token = await CommonFunctions.getAccessTokenByState(getState);
       const apiResponse = await UserRepository.user(token);
 
@@ -42,6 +43,7 @@ export function getUser() {
       dispatch({
         type: "USER_SET_PROFILE",
         permissions: userData.permissions,
+        permissions_tree:CommonFunctions.getTreeStructure(userData.permissions)
       });
 
       dispatch({

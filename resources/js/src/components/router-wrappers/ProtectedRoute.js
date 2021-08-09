@@ -15,7 +15,16 @@ function ProtectedRoute(props) {
   }, [isRehydrated]);
 
 
+  useEffect(() => {
+    if(!isLoading){
+        getUserInfo();
+    }
+  }, [isLoading]);
 
+
+function getUserInfo(){
+    props.getUser();
+}
 
 
   if (isLoading) {
