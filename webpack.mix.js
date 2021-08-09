@@ -19,7 +19,8 @@ mix
     lessOptions: {
       javascriptEnabled: true,
       modifyVars: {
-        "primary-color": "#0BD37E",
+        dark: false,
+        compact:true
       },
     },
   });

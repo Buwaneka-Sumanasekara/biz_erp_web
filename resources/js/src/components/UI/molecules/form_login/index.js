@@ -1,71 +1,48 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { Button } from 'antd';
+import { Form, Input, Button, Checkbox } from "antd";
 
 const FormLogin = (props) => {
-  const { children, isLoading } = props;
+  const onFinish = (values) => {
+    console.log("Success:", values);
+  };
 
-  function validateName(values) {
-    const errors = {};
-    if (!values.uname) {
-      errors.uname = "Username Required";
-    } else if (!values.pass) {
-      errors.pass = "Password Required";
-    }
-    return errors;
-  }
-  
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
 
   return (
-    <>
-     <Button type="primary" >
-          Primary
-        </Button>
-    </>
-  )
-  // return (
-  //   <Formik
-  //     initialValues={{ uname: "", pass: "" }}
-  //     validate={(values) => {
-  //       return validateName(values);
-  //     }}
-  //     onSubmit={(values, actions) => {
-  //       props.onSubmit(values);
-  //     }}
-  //   >
-  //     {(props) => (
-  //       <Form>
-  //         <Field name="uname">
-  //           {({ field, form }) => (
-  //             <FormControl
-  //               isInvalid={form.errors.uname && form.touched.uname}
-  //               pt={2}
-  //             >
-  //               <Input {...field} id="uname" placeholder="Username" />
-  //               <FormErrorMessage>{form.errors.uname}</FormErrorMessage>
-  //             </FormControl>
-  //           )}
-  //         </Field>
+    <Form
+      name="basic"
+      labelCol={{ span: 8 }}
+      wrapperCol={{ span: 16 }}
+      initialValues={{ remember: true }}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+    >
+      <Form.Item
+        label="Username"
+        name="username"
+        rules={[{ required: true, message: "Please input your username!" }]}
+      >
+        <Input />
+      </Form.Item>
 
-  //         <Field name="pass" >
-  //           {({ field, form }) => (
-  //             <FormControl
-  //               isInvalid={form.errors.pass && form.touched.pass}
-  //               py={2}
-  //             >
-  //               <Input {...field} type={"password"} id="pass" placeholder="Password" isDisabled={props.isLoading} />
-  //               <FormErrorMessage>{form.errors.pass}</FormErrorMessage>
-  //             </FormControl>
-  //           )}
-  //         </Field>
-  //         <Button isLoading={props.isLoading} type="submit"   width="100%">
-  //           Login
-  //         </Button>
-  //       </Form>
-  //     )}
-  //   </Formik>
-  // );
+      <Form.Item
+        label="Password"
+        name="password"
+        rules={[{ required: true, message: "Please input your password!" }]}
+      >
+        <Input.Password />
+      </Form.Item>
+
+      <Form.Item wrapperCol={{ offset: 8, span: 24 }}>
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
+      </Form.Item>
+    </Form>
+  );
 };
 
 // Specifies the default values for props:

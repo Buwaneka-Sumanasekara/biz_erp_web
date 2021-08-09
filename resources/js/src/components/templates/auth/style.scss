@@ -1,11 +1,22 @@
-.screen-full {
-    height: 100vh;
-    padding-top:10%;
-}
-.auth-wrapper{
-	border-radius: 10px;
-	position: relative;
-	overflow: hidden;
-	max-width: 100%;
-	min-height: 480px;   
+.ftco-section{
+	padding-top: 10em; 
+	.wrap{
+		justify-content:center;
+	}
+	.login-wrap {
+		position: relative;
+		background: #fff;
+
+		
+	};
+	.login-card-right-wrap{
+		background-color:#2B3252 ;
+		.logo{
+			width: 200px;
+			height: 200px;
+		}
+		h2,h3{
+			color: white
+		}
+	}
 }

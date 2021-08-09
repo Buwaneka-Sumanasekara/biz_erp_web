@@ -9,25 +9,18 @@ import { Layout } from 'antd';
 const { Header, Footer, Sider, Content } = Layout;
 
 
-const HeaderComponent = (props) => {
-  const { children } = props;
-  let history = useHistory();
+const FooterComponent = (props) => {
 
-  function logoutUser() {
-    props.logoutUser().then((resp) => {
-      console.log(resp);
-      history.push("/login");
-    });
-  }
+
 
   return (
-    <Header>Header</Header>
+    <Footer>Footer</Footer>
   );
 };
 
 const mapStateToProps = (state) => ({});
 const mapDispatchToProps = {
-  logoutUser: UserActions.logoutUser,
+
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(HeaderComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(FooterComponent);
