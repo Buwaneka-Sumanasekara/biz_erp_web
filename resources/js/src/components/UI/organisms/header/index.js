@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Button, ButtonGroup, useColorMode } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 
@@ -18,12 +17,7 @@ const HeaderComponent = (props) => {
 
   return (
     <div>
-      {`This is header`}
-      <Button onClick={() => logoutUser()} variant="solid">
-        logout
-      </Button>
 
-      <div>{children}</div>
     </div>
   );
 };

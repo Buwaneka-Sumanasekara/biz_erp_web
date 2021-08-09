@@ -1,5 +1,6 @@
 import { AuthRepository, UserRepository } from "../../api";
 import { ErrorMessages, CommonFunctions } from "../../utils";
+import { ErrorCodes } from "../../constants";
 
 export function loginUser(obj) {
   return async (dispatch, getState) => {
@@ -35,15 +36,36 @@ export function getUser() {
     try {
       const token = await CommonFunctions.getAccessTokenByState(getState);
       const apiResponse = await UserRepository.user(token);
-      return apiResponse;
+
+      const userData = apiResponse.data;
+
+      dispatch({
+        type: "USER_SET_PROFILE",
+        permissions: userData.permissions,
+      });
+
+      dispatch({
+        type: "USER_SET_AUTHENTICATED",
+        isAuthenticated: true,
+      });
+      return userData;
     } catch (error) {
-      console.log(error);
       const errorObj = error.response.data.error;
-      throw new ErrorMessages.CustomError(
-        `[getUser][${error.response.status}]${errorObj.code}`,
-        `${errorObj.message}`,
-        "src/redux-states/user/actions.js:getUser"
-      );
+
+      if (errorObj.code === ErrorCodes.UNAUTHORIZED) {
+        dispatch({
+          type: "USER_SET_AUTHENTICATED",
+          isAuthenticated: false,
+        });
+      }else{
+        throw new ErrorMessages.CustomError(
+          `[getUser][${error.response.status}]${errorObj.code}`,
+          `${errorObj.message}`,
+          "src/redux-states/user/actions.js:getUser"
+        );
+      }
+
+     
     }
   };
 }
@@ -53,9 +75,9 @@ export function logoutUser() {
     try {
       const token = await CommonFunctions.getAccessTokenByState(getState);
       const apiResponse = await UserRepository.logout(token);
-console.log(apiResponse);
+      console.log(apiResponse);
       dispatch({
-        type: "RESET"
+        type: "RESET",
       });
       return apiResponse;
     } catch (error) {

@@ -1,7 +1,8 @@
 export const initialState = {
   token: "",
   profile: {},
-  permissions:[]
+  permissions:[],
+  isAuthenticated:false
 };
 
 export default function appReducer(state = initialState, action) {
@@ -11,6 +12,11 @@ export default function appReducer(state = initialState, action) {
         ...state,
         token: action.token,
       };
+      case "USER_SET_AUTHENTICATED":
+        return {
+          ...state,
+          isAuthenticated: action.isAuthenticated,
+        };
     case "USER_SET_PROFILE":
       return {
         ...state,

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { Box } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
 
 import AuthTemplate from "../../templates/auth";

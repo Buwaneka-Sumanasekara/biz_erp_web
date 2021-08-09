@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Alert,AlertIcon } from "@chakra-ui/react";
 
  
 
@@ -21,10 +20,9 @@ const AlertComponent = (props) => {
 
   if(message!==""){
     return (
-        <Alert status={props.status}>
-        <AlertIcon />
+     <>
         {message}
-        </Alert>
+        </>
        );
   }
 

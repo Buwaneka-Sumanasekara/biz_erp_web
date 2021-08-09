@@ -5,41 +5,20 @@ import { connect } from "react-redux";
 import * as UserActions from "../../redux-states/user/actions";
 
 function ProtectedRoute(props) {
-  const { component: Component, isRehydrated, ...restOfProps } = props;
+  const { component: Component, isRehydrated,isAuthenticated, ...restOfProps } = props;
 
   const [isLoading, setLoading] = useState(true);
-  const [isAuthenticating, setAuthenticating] = useState(true);
-  const [isAuthenticated, setAuthenticated] = useState(false);
-
   useEffect(() => {
     if (isRehydrated) {
       setLoading(false);
     }
   }, [isRehydrated]);
 
-  useEffect(() => {
-    if (!isLoading) {
-      getUserInfo();
-    }
-  }, [isLoading]);
 
-  function getUserInfo() {
 
-      props
-        .getUser()
-        .then((res) => {
-          setAuthenticated(true);
-        })
-        .catch((er) => {
-          setAuthenticated(false);
-        })
-        .finally(() => {
-          setAuthenticating(false);
-        });
-    
-  }
 
-  if (isLoading || isAuthenticating) {
+
+  if (isLoading) {
     return <div>Loading...</div>;
   }
   return (
@@ -55,6 +34,7 @@ function ProtectedRoute(props) {
 const mapStateToProps = (state) => ({
   isRehydrated: state.app.isRehydrated,
   token: state.user.token,
+  isAuthenticated:state.user.isAuthenticated
 });
 const mapDispatchToProps = {
   getUser: UserActions.getUser,
