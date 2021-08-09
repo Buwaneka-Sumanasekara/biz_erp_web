@@ -1,21 +1,21 @@
 import React,{useEffect} from "react";
 import {connect} from 'react-redux';
-import * as UserActions from "../../../redux-states/user/actions";
+import { useHistory } from "react-router-dom";
+import DefaultTemplate from "../../../templates/default";
 
-import HomeTemplate from "../../templates/home";
+const GroupTreePage = (props) => {
 
-const HomePage = (props) => {
+  const {match}= props;
 
     useEffect(() => {
    
     }, []);
   
-   
 
   return (
-    <HomeTemplate>
-      <div>dashboard here</div>
-    </HomeTemplate>
+    <DefaultTemplate>
+      <div>Group Tree</div>
+    </DefaultTemplate>
   );
 };
 
@@ -24,10 +24,10 @@ const mapStateToProps = state => ({
  
 });
 const mapDispatchToProps = {
-  logoutUser:UserActions.logoutUser
+
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(HomePage);
+)(GroupTreePage);

@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Container, Row, Col, Image } from "react-bootstrap";
 
-import { SideMenu, Header } from "../../UI/organisms";
+import { SideMenu } from "../../UI/organisms";
 
-const DefaultTemplate = (props) => {
+const HomeTemplate = (props) => {
   const { children } = props;
 
   return (
@@ -22,4 +22,4 @@ const DefaultTemplate = (props) => {
 const mapStateToProps = (state) => ({});
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(DefaultTemplate);
+export default connect(mapStateToProps, mapDispatchToProps)(HomeTemplate);

@@ -10,7 +10,7 @@ const {store} = configureStore();
 
 import {ProtectedRoute,RegulerRoute} from "./components/router-wrappers";
 
-import {HomePage,LoginPage} from "./components/pages";
+import {HomePage,LoginPage,Group_All_Page,Group_Create_Page,Group_Mapping_Page} from "./components/pages";
 
 const App = () => {
   return (
@@ -19,6 +19,10 @@ const App = () => {
       <Switch>
         <RegulerRoute path="/login" component={LoginPage} exact />
         <ProtectedRoute path="/" component={HomePage} exact />
+
+        <ProtectedRoute path="/product/group/:id" component={Group_All_Page} exact />
+        <ProtectedRoute path="/product/group/:id/create" component={Group_Create_Page} exact />
+        <ProtectedRoute path="/product/group-mapping" component={Group_Mapping_Page} exact />
       </Switch>
     </BrowserRouter>
     </Provider>

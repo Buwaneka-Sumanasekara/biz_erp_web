@@ -1,10 +1,9 @@
 import React,{useEffect} from "react";
 import {connect} from 'react-redux';
-import * as UserActions from "../../../redux-states/user/actions";
 
-import HomeTemplate from "../../templates/home";
+import DefaultTemplate from "../../../templates/default";
 
-const HomePage = (props) => {
+const GroupCreatePage = (props) => {
 
     useEffect(() => {
    
@@ -13,9 +12,9 @@ const HomePage = (props) => {
    
 
   return (
-    <HomeTemplate>
-      <div>dashboard here</div>
-    </HomeTemplate>
+    <DefaultTemplate>
+      <div>Group create</div>
+    </DefaultTemplate>
   );
 };
 
@@ -24,10 +23,10 @@ const mapStateToProps = state => ({
  
 });
 const mapDispatchToProps = {
-  logoutUser:UserActions.logoutUser
+
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(HomePage);
+)(GroupCreatePage);
