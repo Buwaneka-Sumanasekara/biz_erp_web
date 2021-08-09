@@ -15,8 +15,8 @@ const DefaultTemplate = (props) => {
   
       <Container fluid>
         <Row>
-          <Col lg={3}><SideMenu/></Col>
-          <Col>{children}</Col>
+          <Col md={3}><SideMenu/></Col>
+          <Col md={9}>{children}</Col>
         </Row>
       </Container>
     

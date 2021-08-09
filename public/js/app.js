@@ -16994,19 +16994,22 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-
 var SubMenu = antd__WEBPACK_IMPORTED_MODULE_4__.default.SubMenu; // submenu keys of first level
 
-var rootSubmenuKeys = ['sub1', 'sub2', 'sub4'];
-
 var SideMenuComponent = function SideMenuComponent(props) {
-  var children = props.children;
+  var children = props.children,
+      permissions = props.permissions,
+      permissions_tree = props.permissions_tree;
   var history = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useHistory)();
 
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(['sub1']),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
       _useState2 = _slicedToArray(_useState, 2),
       openKeys = _useState2[0],
       setOpenKeys = _useState2[1];
+
+  var rootSubmenuKeys = permissions.map(function (value) {
+    return value.id;
+  });
 
   var onOpenChange = function onOpenChange(keys) {
     var latestOpenKey = keys.find(function (key) {
@@ -17020,55 +17023,74 @@ var SideMenuComponent = function SideMenuComponent(props) {
     }
   };
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(antd__WEBPACK_IMPORTED_MODULE_4__.default, {
+  function handleClick(e) {
+    console.log("click", e);
+    var found = permissions.find(function (element) {
+      return element.id == e.key;
+    });
+    console.log("found", found);
+  }
+
+  function renderSubMenu(menu) {
+    if (menu.childNodes.length > 0) {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(SubMenu, {
+        title: menu.display_name,
+        children: menu.childNodes.map(function (submenu, i) {
+          if (submenu.childNodes.length > 0) {
+            return renderSubMenu(submenu);
+          } else {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(antd__WEBPACK_IMPORTED_MODULE_4__.default.Item, {
+              children: submenu.display_name
+            }, submenu.id);
+          }
+        })
+      }, menu.id);
+    } else {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(antd__WEBPACK_IMPORTED_MODULE_4__.default.Item, {
+        children: menu.display_name
+      }, menu.id);
+    }
+  }
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(antd__WEBPACK_IMPORTED_MODULE_4__.default, {
     mode: "inline",
     openKeys: openKeys,
     onOpenChange: onOpenChange,
-    style: {
-      width: 256
-    },
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(SubMenu, {
-      title: "Navigation One",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(antd__WEBPACK_IMPORTED_MODULE_4__.default.Item, {
-        children: "Option 1"
-      }, "1"), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(antd__WEBPACK_IMPORTED_MODULE_4__.default.Item, {
-        children: "Option 2"
-      }, "2"), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(antd__WEBPACK_IMPORTED_MODULE_4__.default.Item, {
-        children: "Option 3"
-      }, "3"), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(antd__WEBPACK_IMPORTED_MODULE_4__.default.Item, {
-        children: "Option 4"
-      }, "4")]
-    }, "sub1"), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(SubMenu, {
-      title: "Navigation Two",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(antd__WEBPACK_IMPORTED_MODULE_4__.default.Item, {
-        children: "Option 5"
-      }, "5"), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(antd__WEBPACK_IMPORTED_MODULE_4__.default.Item, {
-        children: "Option 6"
-      }, "6"), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(SubMenu, {
-        title: "Submenu",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(antd__WEBPACK_IMPORTED_MODULE_4__.default.Item, {
-          children: "Option 7"
-        }, "7"), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(antd__WEBPACK_IMPORTED_MODULE_4__.default.Item, {
-          children: "Option 8"
-        }, "8")]
-      }, "sub3")]
-    }, "sub2"), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(SubMenu, {
-      title: "Navigation Three",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(antd__WEBPACK_IMPORTED_MODULE_4__.default.Item, {
-        children: "Option 9"
-      }, "9"), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(antd__WEBPACK_IMPORTED_MODULE_4__.default.Item, {
-        children: "Option 10"
-      }, "10"), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(antd__WEBPACK_IMPORTED_MODULE_4__.default.Item, {
-        children: "Option 11"
-      }, "11"), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(antd__WEBPACK_IMPORTED_MODULE_4__.default.Item, {
-        children: "Option 12"
-      }, "12")]
-    }, "sub4")]
-  });
+    onClick: handleClick,
+    children: permissions_tree.map(function (menu, i) {
+      return renderSubMenu(menu);
+    })
+  }); //   return (
+  //     <Menu mode="inline" openKeys={openKeys} onOpenChange={onOpenChange} style={{ width: 256 }}>
+  //       <SubMenu key="sub1" title="Navigation One">
+  //         <Menu.Item key="1">Option 1</Menu.Item>
+  //         <Menu.Item key="2">Option 2</Menu.Item>
+  //         <Menu.Item key="3">Option 3</Menu.Item>
+  //         <Menu.Item key="4">Option 4</Menu.Item>
+  //       </SubMenu>
+  //       <SubMenu key="sub2"  title="Navigation Two">
+  //         <Menu.Item key="5">Option 5</Menu.Item>
+  //         <Menu.Item key="6">Option 6</Menu.Item>
+  //         <SubMenu key="sub3" title="Submenu">
+  //           <Menu.Item key="7">Option 7</Menu.Item>
+  //           <Menu.Item key="8">Option 8</Menu.Item>
+  //         </SubMenu>
+  //       </SubMenu>
+  //       <SubMenu key="sub4"  title="Navigation Three">
+  //         <Menu.Item key="9">Option 9</Menu.Item>
+  //         <Menu.Item key="10">Option 10</Menu.Item>
+  //         <Menu.Item key="11">Option 11</Menu.Item>
+  //         <Menu.Item key="12">Option 12</Menu.Item>
+  //       </SubMenu>
+  //     </Menu>
+  //   );
 };
 
 var mapStateToProps = function mapStateToProps(state) {
-  return {};
+  return {
+    permissions_tree: state.user.permissions_tree,
+    permissions: state.user.permissions
+  };
 };
 
 var mapDispatchToProps = {
@@ -17570,9 +17592,10 @@ var DefaultTemplate = function DefaultTemplate(props) {
       fluid: true,
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__.default, {
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__.default, {
-          lg: 3,
+          md: 3,
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_UI_organisms__WEBPACK_IMPORTED_MODULE_2__.SideMenu, {})
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__.default, {
+          md: 9,
           children: children
         })]
       })
