@@ -16999,7 +16999,7 @@ var SubMenu = antd__WEBPACK_IMPORTED_MODULE_4__.default.SubMenu; // submenu keys
 var SideMenuComponent = function SideMenuComponent(props) {
   var children = props.children,
       permissions = props.permissions,
-      permissions_tree = props.permissions_tree;
+      permissions_uimenu_tree = props.permissions_uimenu_tree;
   var history = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useHistory)();
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
@@ -17038,7 +17038,9 @@ var SideMenuComponent = function SideMenuComponent(props) {
     if (menu.childNodes.length > 0) {
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(SubMenu, {
         title: menu.display_name,
-        children: menu.childNodes.map(function (submenu, i) {
+        children: menu.childNodes.sort(function (a, b) {
+          return a.order < b.order ? -1 : 1;
+        }).map(function (submenu, i) {
           if (submenu.childNodes.length > 0) {
             return renderSubMenu(submenu);
           } else {
@@ -17060,7 +17062,9 @@ var SideMenuComponent = function SideMenuComponent(props) {
     openKeys: openKeys,
     onOpenChange: onOpenChange,
     onClick: handleClick,
-    children: permissions_tree.map(function (menu, i) {
+    children: permissions_uimenu_tree.sort(function (a, b) {
+      return a.order < b.order ? -1 : 1;
+    }).map(function (menu, i) {
       return renderSubMenu(menu);
     })
   }); //   return (
@@ -17091,7 +17095,7 @@ var SideMenuComponent = function SideMenuComponent(props) {
 
 var mapStateToProps = function mapStateToProps(state) {
   return {
-    permissions_tree: state.user.permissions_tree,
+    permissions_uimenu_tree: state.user.permissions_uimenu_tree,
     permissions: state.user.permissions
   };
 };
@@ -17325,6 +17329,11 @@ function ProtectedRoute(props) {
       isLoading = _useState2[0],
       setLoading = _useState2[1];
 
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
+      _useState4 = _slicedToArray(_useState3, 2),
+      isAuthenticating = _useState4[0],
+      setAuthenticating = _useState4[1];
+
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     if (isRehydrated) {
       setLoading(false);
@@ -17337,10 +17346,12 @@ function ProtectedRoute(props) {
   }, [isLoading]);
 
   function getUserInfo() {
-    props.getUser();
+    props.getUser()["finally"](function () {
+      setAuthenticating(false);
+    });
   }
 
-  if (isLoading) {
+  if (isLoading || isAuthenticating) {
     return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
       children: "Loading..."
     });
@@ -17963,7 +17974,7 @@ function loginUser(obj) {
 function getUser() {
   return /*#__PURE__*/function () {
     var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2(dispatch, getState) {
-      var token, apiResponse, userData, errorObj;
+      var token, apiResponse, userData, ar_menu_permissions, errorObj;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
@@ -17980,10 +17991,16 @@ function getUser() {
             case 6:
               apiResponse = _context2.sent;
               userData = apiResponse.data;
+              console.log(userData);
+              ar_menu_permissions = userData.permissions.filter(function (perm) {
+                return perm.is_tab == 1;
+              });
+              console.log(ar_menu_permissions);
               dispatch({
                 type: "USER_SET_PROFILE",
                 permissions: userData.permissions,
-                permissions_tree: _utils__WEBPACK_IMPORTED_MODULE_2__.CommonFunctions.getTreeStructure(userData.permissions)
+                permissions_tree: _utils__WEBPACK_IMPORTED_MODULE_2__.CommonFunctions.getTreeStructure(userData.permissions),
+                permissions_uimenu_tree: _utils__WEBPACK_IMPORTED_MODULE_2__.CommonFunctions.getTreeStructure(ar_menu_permissions)
               });
               dispatch({
                 type: "USER_SET_AUTHENTICATED",
@@ -17991,13 +18008,13 @@ function getUser() {
               });
               return _context2.abrupt("return", userData);
 
-            case 13:
-              _context2.prev = 13;
+            case 16:
+              _context2.prev = 16;
               _context2.t0 = _context2["catch"](0);
               errorObj = _context2.t0.response.data.error;
 
               if (!(errorObj.code === _constants__WEBPACK_IMPORTED_MODULE_3__.ErrorCodes.UNAUTHORIZED)) {
-                _context2.next = 20;
+                _context2.next = 23;
                 break;
               }
 
@@ -18005,18 +18022,18 @@ function getUser() {
                 type: "USER_SET_AUTHENTICATED",
                 isAuthenticated: false
               });
-              _context2.next = 21;
+              _context2.next = 24;
               break;
 
-            case 20:
+            case 23:
               throw new _utils__WEBPACK_IMPORTED_MODULE_2__.ErrorMessages.CustomError("[getUser][".concat(_context2.t0.response.status, "]").concat(errorObj.code), "".concat(errorObj.message), "src/redux-states/user/actions.js:getUser");
 
-            case 21:
+            case 24:
             case "end":
               return _context2.stop();
           }
         }
-      }, _callee2, null, [[0, 13]]);
+      }, _callee2, null, [[0, 16]]);
     }));
 
     return function (_x3, _x4) {
@@ -18094,6 +18111,7 @@ var initialState = {
   profile: {},
   permissions: [],
   permissions_tree: [],
+  permissions_uimenu_tree: [],
   isAuthenticated: false
 };
 function appReducer() {
@@ -18115,7 +18133,8 @@ function appReducer() {
       return _objectSpread(_objectSpread({}, state), {}, {
         profile: action.profile,
         permissions: action.permissions,
-        permissions_tree: action.permissions_tree
+        permissions_tree: action.permissions_tree,
+        permissions_uimenu_tree: action.permissions_uimenu_tree
       });
 
     default:

@@ -39,11 +39,15 @@ export function getUser() {
       const apiResponse = await UserRepository.user(token);
 
       const userData = apiResponse.data;
+      console.log(userData);
+      const ar_menu_permissions=userData.permissions.filter(perm => perm.is_tab==1);
+      console.log(ar_menu_permissions);
 
       dispatch({
         type: "USER_SET_PROFILE",
         permissions: userData.permissions,
-        permissions_tree:CommonFunctions.getTreeStructure(userData.permissions)
+        permissions_tree:CommonFunctions.getTreeStructure(userData.permissions),
+        permissions_uimenu_tree:CommonFunctions.getTreeStructure(ar_menu_permissions)
       });
 
       dispatch({

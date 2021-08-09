@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useHistory,Link } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { connect } from "react-redux";
-
 
 import * as UserActions from "../../../../redux-states/user/actions";
 
@@ -12,7 +11,7 @@ const { SubMenu } = Menu;
 // submenu keys of first level
 
 const SideMenuComponent = (props) => {
-  const { children, permissions, permissions_tree } = props;
+  const { children, permissions, permissions_uimenu_tree } = props;
   let history = useHistory();
 
   const [openKeys, setOpenKeys] = useState([]);
@@ -29,13 +28,11 @@ const SideMenuComponent = (props) => {
   };
 
   function handleClick(e) {
-  
+    const found = permissions.find((element) => element.id == e.key);
 
-    const found = permissions.find((element) => (element.id == e.key));
-
-    if(found && found.url_path!==""){
-        console.log("click", e);
-        history.push(found.url_path);
+    if (found && found.url_path !== "") {
+      console.log("click", e);
+      history.push(found.url_path);
     }
   }
 
@@ -43,15 +40,19 @@ const SideMenuComponent = (props) => {
     if (menu.childNodes.length > 0) {
       return (
         <SubMenu key={menu.id} title={menu.display_name}>
-          {menu.childNodes.map((submenu, i) => {
-            if (submenu.childNodes.length > 0) {
-              return renderSubMenu(submenu);
-            } else {
-              return (
-                <Menu.Item key={submenu.id}>{submenu.display_name}</Menu.Item>
-              );
-            }
-          })}
+          {menu.childNodes
+            .sort((a, b) => {
+              return a.order < b.order ? -1 : 1;
+            })
+            .map((submenu, i) => {
+              if (submenu.childNodes.length > 0) {
+                return renderSubMenu(submenu);
+              } else {
+                return (
+                  <Menu.Item key={submenu.id}>{submenu.display_name}</Menu.Item>
+                );
+              }
+            })}
         </SubMenu>
       );
     } else {
@@ -66,7 +67,11 @@ const SideMenuComponent = (props) => {
       onOpenChange={onOpenChange}
       onClick={handleClick}
     >
-      {permissions_tree.map((menu, i) => renderSubMenu(menu))}
+      {permissions_uimenu_tree
+        .sort((a, b) => {
+          return a.order < b.order ? -1 : 1;
+        })
+        .map((menu, i) => renderSubMenu(menu))}
     </Menu>
   );
 
@@ -97,7 +102,7 @@ const SideMenuComponent = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  permissions_tree: state.user.permissions_tree,
+  permissions_uimenu_tree: state.user.permissions_uimenu_tree,
   permissions: state.user.permissions,
 });
 const mapDispatchToProps = {

@@ -3,6 +3,7 @@ export const initialState = {
   profile: {},
   permissions:[],
   permissions_tree:[],
+  permissions_uimenu_tree:[],
   isAuthenticated:false
 };
 
@@ -23,7 +24,8 @@ export default function appReducer(state = initialState, action) {
         ...state,
         profile: action.profile,
         permissions:action.permissions,
-        permissions_tree:action.permissions_tree
+        permissions_tree:action.permissions_tree,
+        permissions_uimenu_tree:action.permissions_uimenu_tree
       };
     default:
       return state;

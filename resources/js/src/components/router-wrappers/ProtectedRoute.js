@@ -8,6 +8,8 @@ function ProtectedRoute(props) {
   const { component: Component, isRehydrated,isAuthenticated, ...restOfProps } = props;
 
   const [isLoading, setLoading] = useState(true);
+  const [isAuthenticating, setAuthenticating] = useState(true);
+
   useEffect(() => {
     if (isRehydrated) {
       setLoading(false);
@@ -23,11 +25,14 @@ function ProtectedRoute(props) {
 
 
 function getUserInfo(){
-    props.getUser();
+    
+    props.getUser().finally(()=>{
+      setAuthenticating(false);
+    })
 }
 
 
-  if (isLoading) {
+  if (isLoading || isAuthenticating) {
     return <div>Loading...</div>;
   }
   return (
