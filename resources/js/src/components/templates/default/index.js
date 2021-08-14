@@ -6,7 +6,7 @@ import { Header } from "../../UI/organisms";
 import { PageHeader } from "../../UI/atoms";
 
 const DefaultTemplate = (props) => {
-  const { children, title, subTitle } = props;
+  const { children, title, subTitle,extra } = props;
 
   return (
     <Container fluid>
@@ -17,7 +17,7 @@ const DefaultTemplate = (props) => {
       </Row>
       <Row>
         <Col>
-          <PageHeader title={title} subTitle={subTitle} >
+          <PageHeader title={title} subTitle={subTitle} extra={extra}>
             {children}
           </PageHeader>
         </Col>

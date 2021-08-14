@@ -9,20 +9,23 @@ import CustomBreadcrump from "../Breadcrump";
 import CommonFunctions from "../../../../utils/CommonFunctions";
 
 const PageHeaderComponent = (props) => {
-  const { children,title, subTitle, enableBack,permissions } = props;
+  const { children,title, subTitle, enableBack,permissions,extra } = props;
 
   const [openKeys, setOpenKeys] = useState([]);
 
   let history = useHistory();
   const location = useLocation();
+
+
+
   useEffect(() => {
     return getKeyOfCurrentPath();
   }, [children]);
 
   function getKeyOfCurrentPath() {
+    
     const url = location.pathname;
     const found = permissions.find((element) => element.url_path == url);
-
     if (found !== undefined) {
       setTimeout(() => {
         const arParents = CommonFunctions.getAllParentsOfTree(
@@ -43,6 +46,7 @@ const PageHeaderComponent = (props) => {
       subTitle={subTitle}
       breadcrumb={{ routes:openKeys }}
       breadcrumbRender={(props,originBreadcrumb)=><CustomBreadcrump routes={props.breadcrumb.routes}/>}
+      extra={extra}
     >
       {children}
       </PageHeader>

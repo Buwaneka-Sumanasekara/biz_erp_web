@@ -11,6 +11,19 @@ use App\Http\Resources\GeneralResource;
 
 class GroupController extends Controller
 {
+
+
+    public function getGroupList(Request $request,$no)
+    {
+          try {
+             $GroupCollection=CommonHelper::getGroupClassByNo($no)::get();
+
+             return $GroupCollection;
+          } catch (\Exception $e) {
+            return (new ErrorResource($e));
+           } 
+    }
+
     public function createGroup(Request $request)
     {
        try {

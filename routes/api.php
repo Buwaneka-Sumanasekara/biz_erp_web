@@ -31,6 +31,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::prefix("group")->group(function () {
         Route::post('/', [GroupController::class, 'createGroup']);
+        Route::prefix("{group_no}")->group(function () {
+            Route::get('/', [GroupController::class, 'getGroupList']); 
+        });
     });  
 });
 
