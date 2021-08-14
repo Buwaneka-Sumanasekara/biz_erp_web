@@ -24,12 +24,17 @@ function getTreeStructure(dataset) {
   return dataTree;
 }
 
-function getAllParentsOfTree(artree, child, arKeys = []) {
+function getAllParentsOfTree(artree, child, arKeys = [],fullobject=false) {
   if (child.id !== child.parent_id) {
     for (const node of artree) {
       if (child.parent_id === node.id) {
-        arKeys.push(`${node.id}`);
-        return getAllParentsOfTree(artree, node, arKeys);
+        if(fullobject){
+          arKeys.push(node);
+        }else{
+          arKeys.push(`${node.id}`);
+        }
+      
+        return getAllParentsOfTree(artree, node, arKeys,fullobject);
       }
     }
   } else {

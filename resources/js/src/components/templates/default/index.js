@@ -17,7 +17,7 @@ const DefaultTemplate = (props) => {
       </Row>
       <Row>
         <Col>
-          <PageHeader title={title} subTitle={subTitle}>
+          <PageHeader title={title} subTitle={subTitle} >
             {children}
           </PageHeader>
         </Col>
@@ -26,7 +26,9 @@ const DefaultTemplate = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+ 
+});
 const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(DefaultTemplate);

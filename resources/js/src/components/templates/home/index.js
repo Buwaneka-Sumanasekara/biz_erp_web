@@ -11,12 +11,9 @@ const HomeTemplate = (props) => {
     <Container fluid>
       <Row>
         <Col>
-        <Header> {children}</Header>
+          <Header> {children}</Header>
         </Col>
       </Row>
-  
-           
-      
     </Container>
   );
 };

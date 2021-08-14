@@ -1,5 +1,5 @@
-import FormLogin from "./form_login";
-import TopMenu from "./top_menu";
+import FormLogin from "./FormLogin";
+import TopMenu from "./TopMenu";
 
 
 export {

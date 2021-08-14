@@ -39,9 +39,8 @@ export function getUser() {
       const apiResponse = await UserRepository.user(token);
 
       const userData = apiResponse.data;
-      console.log(userData);
       const ar_menu_permissions=userData.permissions.filter(perm => perm.is_tab==1);
-      console.log(ar_menu_permissions);
+
 
       dispatch({
         type: "USER_SET_PROFILE",
@@ -82,7 +81,6 @@ export function logoutUser() {
     try {
       const token = await CommonFunctions.getAccessTokenByState(getState);
       const apiResponse = await UserRepository.logout(token);
-      console.log(apiResponse);
       dispatch({
         type: "RESET",
       });
