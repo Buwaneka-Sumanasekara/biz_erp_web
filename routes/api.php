@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GroupController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,4 +27,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/permissions', [AuthController::class, 'permissions']);
     });  
 });
+
+
+Route::prefix("test")->group(function () {
+    Route::get('/group-next-id/{group_no}', [GroupController::class, 'testGroupNo']);
+});  
+
 

@@ -14,5 +14,11 @@
 
 php artisan migrate:refresh --seed
 
+
+## auto load files
+
+composer dump-autoload
+
+
 ## License
 MIT
