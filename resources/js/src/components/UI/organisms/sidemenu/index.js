@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { connect } from "react-redux";
-import Animate from 'rc-animate';
-
+import Animate from "rc-animate";
 
 import * as UserActions from "../../../../redux-states/user/actions";
 
@@ -11,9 +10,7 @@ import CommonFunctions from "../../../../utils/CommonFunctions";
 import { Menu, Card, Avatar, Typography } from "antd";
 const { Title, Paragraph, Text, Link } = Typography;
 
-
 import "./style.scss";
-
 
 const { SubMenu } = Menu;
 // submenu keys of first level
@@ -36,16 +33,19 @@ const SideMenuComponent = (props) => {
   function getKeyOfCurrentPath() {
     const url = location.pathname;
     const found = permissions.find((element) => element.url_path == url);
-    setSelectedKeys([`${found.id}`]);
-    setTimeout(() => {
-      const arParents = CommonFunctions.getAllParentsOfTree(
-        permissions,
-        found,
-        [`${found.id}`]
-      );
-      setOpenKeys(arParents);
-      setShow(true);
-    }, 500);
+
+    if (found !== undefined) {
+      setSelectedKeys([`${found.id}`]);
+      setTimeout(() => {
+        const arParents = CommonFunctions.getAllParentsOfTree(
+          permissions,
+          found,
+          [`${found.id}`]
+        );
+        setOpenKeys(arParents);
+        setShow(true);
+      }, 500);
+    }
   }
 
   const onOpenChange = (keys) => {
@@ -103,23 +103,17 @@ const SideMenuComponent = (props) => {
         }}
       >
         <Title level={5}>{`~ ${CommonFunctions.generateGreetings()} ~`}</Title>
-        <Animate
-          showProp="show"
-          transitionName="fade"
-        >
-          <div show={show}>
+
         <Avatar
           size="large"
           style={{
             backgroundColor: CommonFunctions.getAcronymColor(Acronym),
             verticalAlign: "middle",
           }}
-          
         >
           {Acronym}
         </Avatar>
-        </div>
-</Animate>
+
         <Title level={4}>{`${profile.firstname} ${profile.lastname}`}</Title>
       </Card>
       <Menu
