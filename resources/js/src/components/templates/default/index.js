@@ -2,18 +2,25 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Container, Row, Col, Image } from "react-bootstrap";
 
-import { SideMenu, Header } from "../../UI/organisms";
+import { Header } from "../../UI/organisms";
+import { PageHeader } from "../../UI/atoms";
 
 const DefaultTemplate = (props) => {
-  const { children } = props;
+  const { children, title, subTitle } = props;
 
   return (
     <Container fluid>
       <Row>
-        <Col md={3}>
-          <SideMenu />
+        <Col>
+        <Header/>
         </Col>
-        <Col md={9}>{children}</Col>
+      </Row>
+      <Row>
+        <Col>
+          <PageHeader title={title} subTitle={subTitle}>
+            {children}
+          </PageHeader>
+        </Col>
       </Row>
     </Container>
   );

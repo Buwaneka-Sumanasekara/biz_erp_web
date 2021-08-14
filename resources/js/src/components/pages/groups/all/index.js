@@ -12,7 +12,7 @@ const GroupCreatePage = (props) => {
    
 
   return (
-    <DefaultTemplate>
+    <DefaultTemplate title={`Group`}>
       <div>Group Specific  {match.params.id}</div>
     </DefaultTemplate>
   );

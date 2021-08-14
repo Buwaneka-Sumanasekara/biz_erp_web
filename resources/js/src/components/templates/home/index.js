@@ -2,19 +2,21 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Container, Row, Col, Image } from "react-bootstrap";
 
-import { SideMenu } from "../../UI/organisms";
+import { Header } from "../../UI/organisms";
 
 const HomeTemplate = (props) => {
-  const { children } = props;
+  const { children, title, subTitle } = props;
 
   return (
     <Container fluid>
       <Row>
-        <Col md={3}>
-          <SideMenu />
+        <Col>
+        <Header> {children}</Header>
         </Col>
-        <Col md={9}>{children}</Col>
       </Row>
+  
+           
+      
     </Container>
   );
 };
