@@ -15,14 +15,17 @@ const GroupCreatePage = (props) => {
   const [Error, setError] = useState("");
   const [arGroupData, setGroupArray] = useState([]);
 
+  const GroupId=match.params.id;
+
     useEffect(() => {
       onLoadGroupData();
-    }, []);
+    }, [GroupId]);
   
    
-    const GroupId=match.params.id;
+  
 
     function onLoadGroupData() {
+      
       setLoading(true);
       setError("");
       props
