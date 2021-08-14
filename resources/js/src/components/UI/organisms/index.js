@@ -1,7 +1,8 @@
-import Header from "./header";
-import Footer from "./footer";
-import SideMenu from "./sidemenu";
+import Header from "./Header";
+import Footer from "./Footer";
+import SideMenu from "./SideMenu";
+import GroupCreateModal from "./GroupCreateModal";
 
 export {
-    Header,Footer,SideMenu
+    Header,Footer,SideMenu,GroupCreateModal
 }
