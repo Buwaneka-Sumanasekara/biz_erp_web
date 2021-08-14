@@ -28,6 +28,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });  
 });
 
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::prefix("group")->group(function () {
+        Route::post('/', [GroupController::class, 'createGroup']);
+    });  
+});
+
 
 Route::prefix("test")->group(function () {
     Route::get('/group-next-id/{group_no}', [GroupController::class, 'testGroupNo']);

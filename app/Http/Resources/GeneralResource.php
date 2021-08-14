@@ -6,7 +6,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class GeneralResource extends JsonResource
 {
-    public static $wrap = "";
+    public static $wrap = "data";
     /**
      * Transform the resource into an array.
      *
@@ -16,7 +16,8 @@ class GeneralResource extends JsonResource
     public function toArray($request)
     {
         return [
-            "success"=>true
+            "success"=>true,
+            "message"=>(isset($this->message)?$this->message:"success")
         ];
     }
 
@@ -40,7 +41,7 @@ class GeneralResource extends JsonResource
     {
         return [
             'meta' => [
-                'key' => 'value',
+                'responsed_time' => "",
             ],
         ];
     }
