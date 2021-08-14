@@ -20,8 +20,8 @@ class GroupController extends Controller
             'group_no.required' => 'group no is required.'
         ]); 
 
-        CommonHelper::getNextGroupId($request->group_no);
-
+        $GroupNo=CommonHelper::getNextGroupId($request->group_no);
+        
 
        }  catch (\Exception $e) {
         return (new ErrorResource($e));

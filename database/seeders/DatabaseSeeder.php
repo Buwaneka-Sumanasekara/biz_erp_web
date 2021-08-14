@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             PermissionsSeeder::class,
             UserPermissionsSeeder::class,
             UserSeeder::class,
+            GroupSeeder::class,
         ]);
     }
 }
