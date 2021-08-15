@@ -10,11 +10,12 @@ use Maatwebsite\Excel\Concerns\WithProgressBar;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Validators\Failure;
+use Maatwebsite\Excel\Concerns\HasReferencesToOtherSheets;
 
 use Illuminate\Support\Str;
 
 
-class GroupImport implements ToCollection, WithProgressBar,WithHeadingRow,SkipsOnFailure
+class GroupImport implements ToCollection, WithProgressBar,WithHeadingRow,SkipsOnFailure,HasReferencesToOtherSheets
 {
     use Importable;
 

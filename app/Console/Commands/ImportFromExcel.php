@@ -2,24 +2,25 @@
 
 namespace App\Console\Commands;
 
-use App\Imports\GroupAllImport;
 use Illuminate\Console\Command;
 
-class GroupImportExcel extends Command
+use App\Imports\AllImports;
+
+class ImportFromExcel extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'import:excel_group';
+    protected $signature = 'import:excel_data {mode}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Import group';
+    protected $description = 'Import excel data';
 
     /**
      * Create a new command instance.
@@ -38,8 +39,12 @@ class GroupImportExcel extends Command
      */
     public function handle()
     {
-        $this->output->title('Starting import groups');
-        (new GroupAllImport)->withOutput($this->output)->import('public/imports/NHItems.xlsx');
-        $this->output->success('Import groups successful');
+
+        $mode=$this->argument('mode');
+
+        $this->output->title('Starting importing all data');
+        (new AllImports($mode))->withOutput($this->output)->import('public/imports/NHItems.xlsx');
+        $this->output->success('Import all data successful');
+        
     }
 }
