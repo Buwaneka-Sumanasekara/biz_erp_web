@@ -13,6 +13,7 @@ use App\Models\PmGroupMapping;
 use App\Exceptions\ResourceAlreadyExistsException;
 
 use App\Http\Resources\GeneralResource;
+use App\Http\Resources\GroupMappingResource;
 
 class GroupController extends Controller
 {
@@ -109,5 +110,24 @@ class GroupController extends Controller
     }
 
 
+    public function getAllGroupMappings(Request $request)
+    {
+          try {
+             $GroupMappingCollection=PmGroupMapping::orderBy("pm_group1_id")->get();
+             return GroupMappingResource::collection($GroupMappingCollection);
+          } catch (\Exception $e) {
+            return (new ErrorResource($e));
+           } 
+    }
+
+    public function getAllGroupMappingsBelongstoGroup1Id(Request $request,String $Group1Id)
+    {
+          try {
+             $GroupMappingCollection=PmGroupMapping::where("pm_group1_id","=",$Group1Id)->get();
+             return GroupMappingResource::collection($GroupMappingCollection);
+          } catch (\Exception $e) {
+            return (new ErrorResource($e));
+           } 
+    }
 
 }

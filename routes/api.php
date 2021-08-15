@@ -35,7 +35,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::prefix("group-mapping")->group(function () {
+        Route::get('/', [GroupController::class, 'getAllGroupMappings']);
         Route::post('/', [GroupController::class, 'createGroupMapping']);
+        Route::prefix("{group1_id}")->group(function () {
+            Route::get('/', [GroupController::class, 'getAllGroupMappingsBelongstoGroup1Id']); 
+        });
     });
 });
 
