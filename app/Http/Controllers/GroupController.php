@@ -7,6 +7,11 @@ use App\Http\Resources\ErrorResource;
 use Illuminate\Validation\Rule;
 use App\Helpers\CommonHelper;
 
+use App\Models\PmGroupMapping;
+
+
+use App\Exceptions\ResourceAlreadyExistsException;
+
 use App\Http\Resources\GeneralResource;
 
 class GroupController extends Controller
@@ -54,4 +59,55 @@ class GroupController extends Controller
             return (new ErrorResource($e));
         } 
     }
+
+    public function createGroupMapping(Request $request)
+    {
+        try {
+            $request->validate([
+                'group_1' => 'required|exists:pm_group1,id',
+                'group_2' => 'required|exists:pm_group2,id',
+                'group_3' => 'required|exists:pm_group3,id',
+                'group_4' => 'required|exists:pm_group4,id',
+                'group_5' => 'required|exists:pm_group5,id',
+                'group_6' => 'required|exists:pm_group6,id',
+            ],[
+                'group_1.required' => 'Group 1 is required.',
+                'group_2.required' => 'Group 1 is required.',
+                'group_3.required' => 'Group 1 is required.',
+                'group_4.required' => 'Group 1 is required.',
+                'group_5.required' => 'Group 1 is required.',
+                'group_6.required' => 'Group 1 is required.',
+            ]); 
+
+            $GroupMapping=PmGroupMapping::where([["pm_group1_id","=",$request->group_1],
+                ["pm_group2_id","=",$request->group_2],
+                ["pm_group3_id","=",$request->group_3],
+                ["pm_group4_id","=",$request->group_4],
+                ["pm_group5_id","=",$request->group_5],
+                ["pm_group6_id","=",$request->group_6]
+            ]);
+
+            $count=$GroupMapping->count();
+
+            if ($count === 0) {
+                PmGroupMapping::create([
+                 'id'=> ((int)$GroupMapping->max("id")+1),  
+                'pm_group1_id'=>$request->group_1,
+                'pm_group2_id'=>$request->group_2,
+                'pm_group3_id'=>$request->group_3,
+                'pm_group4_id'=>$request->group_4,
+                'pm_group5_id'=>$request->group_5,
+                'pm_group6_id'=>$request->group_6,
+                ]);
+                return new GeneralResource((object)array("message"=>"group saved successfully"));
+            }else{
+                throw new ResourceAlreadyExistsException();
+            }  
+        } catch (\Exception $e) {
+            return (new ErrorResource($e));
+        }
+    }
+
+
+
 }
