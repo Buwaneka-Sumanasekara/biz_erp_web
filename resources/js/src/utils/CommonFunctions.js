@@ -1,4 +1,5 @@
 import moment from 'moment';
+import _ from "lodash";
 
 async function getAccessTokenByState(getState) {
   let state = await getState();
@@ -93,9 +94,19 @@ function generateGreetings() {
   }
 }
 
+function getUniqueArray(ar1,ar2,key=""){
+  console.log(ar1,ar2,key);
+    if(key!==""){
+      return _.uniqBy(_.concat(ar1,ar2),key);
+    }else{
+      return _.uniq(_.concat(ar1,ar2));
+    }
+}
+
 export default {
   getAccessTokenByState: getAccessTokenByState,
   getTreeStructure,
   getAllParentsOfTree,
-  getAcronym,getAcronymColor,generateGreetings
+  getAcronym,getAcronymColor,generateGreetings,
+  getUniqueArray:getUniqueArray
 };

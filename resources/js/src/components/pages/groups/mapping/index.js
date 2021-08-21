@@ -13,14 +13,20 @@ import {
 const GroupMappingPage = (props) => {
   const { match } = props;
   const [SelectedGroup1, setSelectedGroup1] = useState("");
+  const [arSelectedGroups, setSelectedGroups] = useState([]);
 
   useEffect(() => {}, []);
+
+
+function onValueChangeSelectGroup(val){
+  console.log("onValueChangeSelectGroup",val);
+}
 
   return (
     <DefaultTemplate title={`Group Mapping`}>
       <Row>
         <Col>
-          <GroupMappingCreate />
+          <GroupMappingCreate onValuesChange={(val)=>onValueChangeSelectGroup(val)} />
         </Col>
       </Row>
       <Row>
