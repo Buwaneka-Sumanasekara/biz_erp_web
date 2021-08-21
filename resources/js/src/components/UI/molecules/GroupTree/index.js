@@ -1,54 +1,103 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { Table, Checkbox } from "antd";
+import PropTypes, { func } from "prop-types";
+import { Tree } from "antd";
 
-import * as ProductActions from "../../../../redux-states/product/actions";
+import { CommonFunctions } from "../../../../utils";
 
 const GroupTree = (props) => {
-  const [isLoading, setLoading] = useState(false);
-  const [Error, setError] = useState("");
-  const [GroupMappingByGroup1Array, setGroupMappingByGroup1Array] = useState(
-    []
-  );
+  const [treeData, setTreeData] = useState([]);
+  const [expandedKeys, setExpandedKeys] = useState([]);
+  const [currentOpenedParent, setcurrentOpenedParent] = useState("");
 
   useEffect(() => {
-    onLoadGroupMappingData(props.Group1Id);
-  }, [props.Group1Id]);
+    generateTree();
+  }, [props.data]);
 
-  function onLoadGroupMappingData(group1_id) {
-    if (group1_id !== "") {
-      setLoading(true);
-      setError("");
-      props
-        .getAllGroupMappingByGroup1(group1_id)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((er) => {
-          setError(er.message);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
+  function generateTree() {
+    setTreeData(
+      CommonFunctions.getGroupValues(
+        props.data,
+        1,
+        [],
+        props.arGroupTableDetails.length
+      )
+    );
   }
 
-  return <></>;
+  function onLoadData({ child_parents, cur_level, key, children, pos }) {
+    console.log("onLoadData",child_parents);
+    return new Promise((resolve) => {
+      if (children) {
+        resolve();
+        return;
+      }
+
+      if (cur_level < props.arGroupTableDetails.length) {
+        setTimeout(() => {
+          setTreeData((origin) =>
+            updateTreeData(
+              origin,
+              key,
+              CommonFunctions.getGroupValues(
+                props.data,
+                cur_level + 1,
+                child_parents,
+                props.arGroupTableDetails.length,
+                pos
+              )
+            )
+          );
+
+          resolve();
+        }, 1000);
+      } else {
+        resolve();
+        return;
+      }
+    });
+  }
+
+  function updateTreeData(list, key, children) {
+    return list.map((node) => {
+      if (node.key === key) {
+        return { ...node, children };
+      }
+
+      if (node.children) {
+        return {
+          ...node,
+          children: updateTreeData(node.children, key, children),
+        };
+      }
+
+      return node;
+    });
+  }
+
+  function onExpand(expandedKeys, info) {
+    setExpandedKeys(expandedKeys);
+  }
+
+  return (
+    <Tree
+      onExpand={(expandedKeys, info) => onExpand(expandedKeys, info)}
+      loadData={onLoadData}
+      treeData={treeData}
+      showLine
+      expandedKeys={expandedKeys}
+    />
+  );
 };
 
 // Specifies the default values for props:
-GroupTree.defaultProps = {
-  Group1Id: "",
-};
+GroupTree.defaultProps = {};
 
-GroupTree.propTypes = {
-  Group1Id: PropTypes.string,
-};
+GroupTree.propTypes = {};
 
-const mapStateToProps = (state) => ({});
-const mapDispatchToProps = {
-  getAllGroupMappingByGroup1: ProductActions.getAllGroupMappingByGroup1,
-};
+const mapStateToProps = (state) => ({
+  arGroupTableDetails: state.app.arGroupTableDetails,
+});
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupTree);

@@ -10,12 +10,45 @@ import {
   GroupMappingCreate,
 } from "../../../UI/molecules";
 
+
+//actions
+import * as ProductActions from "../../../../redux-states/product/actions";
+
+
 const GroupMappingPage = (props) => {
   const { match } = props;
-  const [SelectedGroup1, setSelectedGroup1] = useState("");
+  
+  const [isLoading, setLoading] = useState(false);
+  const [Error, setError] = useState("");
+  const [GroupMappingArray, setGroupMappingArray] = useState([]);
+
   const [arSelectedGroups, setSelectedGroups] = useState([]);
 
-  useEffect(() => {}, []);
+
+
+  useEffect(() => {
+
+    onLoadGroupMappingData()
+  }, []);
+
+
+
+
+  function onLoadGroupMappingData() {
+    setLoading(true);
+    setError("");
+    props
+      .getAllGroupMapping()
+      .then((res) => {
+        setGroupMappingArray(res);
+      })
+      .catch((er) => {
+        setError(er.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
 
 
 function onValueChangeSelectGroup(val){
@@ -26,15 +59,15 @@ function onValueChangeSelectGroup(val){
     <DefaultTemplate title={`Group Mapping`}>
       <Row>
         <Col>
-          <GroupMappingCreate onValuesChange={(val)=>onValueChangeSelectGroup(val)} />
+          <GroupMappingCreate onValuesChange={(val)=>onValueChangeSelectGroup(val)} isLoading={isLoading} />
         </Col>
       </Row>
       <Row>
         <Col span={14}>
-          <GroupMappingTable />
+          <GroupMappingTable data={GroupMappingArray} isLoading={isLoading} />
         </Col>
         <Col span={10}>
-          {SelectedGroup1 !== "" && <GroupTree Group1Id={SelectedGroup1} />}
+        <GroupTree  data={GroupMappingArray} isLoading={isLoading} />
         </Col>
       </Row>
     </DefaultTemplate>
@@ -42,6 +75,8 @@ function onValueChangeSelectGroup(val){
 };
 
 const mapStateToProps = (state) => ({});
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  getAllGroupMapping: ProductActions.getAllGroupMapping,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupMappingPage);

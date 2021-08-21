@@ -3,42 +3,19 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Table, Checkbox } from "antd";
 
-import * as ProductActions from "../../../../redux-states/product/actions";
+
 
 const GroupMappingTable = (props) => {
+  const { arGroupTableDetails } = props;
 
-  const {arGroupTableDetails}= props;
+  useEffect(() => {}, []);
 
-  const [isLoading, setLoading] = useState(false);
-  const [Error, setError] = useState("");
-  const [GroupMappingArray, setGroupMappingArray] = useState([]);
-
-  useEffect(() => {
-    onLoadGroupMappingData();
-  }, []);
-
-  function onLoadGroupMappingData() {
-    setLoading(true);
-    setError("");
-    props
-      .getAllGroupMapping()
-      .then((res) => {
-        setGroupMappingArray(res);
-      })
-      .catch((er) => {
-        setError(er.message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }
-
-  function getColumns(){
-    const arCol=[];
-    let i=1;
+  function getColumns() {
+    const arCol = [];
+    let i = 1;
     for (const GroupTable of arGroupTableDetails) {
       arCol.push({
-        title:GroupTable.display_name,
+        title: GroupTable.display_name,
         dataIndex: `group${i}_name`,
         key: `group${i}_name`,
       });
@@ -48,7 +25,7 @@ const GroupMappingTable = (props) => {
     return arCol;
   }
 
-  const columns =getColumns();
+  const columns = getColumns();
 
   function onClickRow(event, record) {
     console.log(record);
@@ -56,9 +33,9 @@ const GroupMappingTable = (props) => {
 
   return (
     <Table
-      dataSource={GroupMappingArray}
+      dataSource={props.data}
       columns={columns}
-      loading={isLoading}
+      loading={props.isLoading}
       rowKey={"id"}
       onRow={(record, rowIndex) => {
         return {
@@ -78,17 +55,21 @@ const GroupMappingTable = (props) => {
 // Specifies the default values for props:
 GroupMappingTable.defaultProps = {
   onSubmit: () => {},
+  data:[],
+  isLoading:false
 };
 
 GroupMappingTable.propTypes = {
   onSubmit: PropTypes.func,
+  data:PropTypes.array,
+  isLoading:PropTypes.bool
 };
 
 const mapStateToProps = (state) => ({
   arGroupTableDetails: state.app.arGroupTableDetails,
 });
 const mapDispatchToProps = {
-  getAllGroupMapping: ProductActions.getAllGroupMapping,
+
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupMappingTable);

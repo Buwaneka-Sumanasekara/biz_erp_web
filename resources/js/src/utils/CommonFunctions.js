@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from "moment";
 import _ from "lodash";
 
 async function getAccessTokenByState(getState) {
@@ -11,37 +11,80 @@ async function getAccessTokenByState(getState) {
   }
 }
 
-function getTreeStructure(dataset) {
+/*========================== TREE ================================*/
+function getTreeStructure(dataset, childNodeName = "childNodes") {
   const hashTable = Object.create(null);
   dataset.forEach(
-    (aData) => (hashTable[aData.id] = { ...aData, childNodes: [] })
+    (aData) => (hashTable[aData.id] = { ...aData, [childNodeName]: [] })
   );
   const dataTree = [];
   dataset.forEach((aData) => {
     if (aData.id !== aData.parent_id)
-      hashTable[aData.parent_id].childNodes.push(hashTable[aData.id]);
+      hashTable[aData.parent_id][childNodeName].push(hashTable[aData.id]);
     else dataTree.push(hashTable[aData.id]);
   });
   return dataTree;
 }
 
-function getAllParentsOfTree(artree, child, arKeys = [],fullobject=false) {
+function getAllParentsOfTree(artree, child, arKeys = [], fullobject = false) {
   if (child.id !== child.parent_id) {
     for (const node of artree) {
       if (child.parent_id === node.id) {
-        if(fullobject){
+        if (fullobject) {
           arKeys.push(node);
-        }else{
+        } else {
           arKeys.push(`${node.id}`);
         }
-      
-        return getAllParentsOfTree(artree, node, arKeys,fullobject);
+
+        return getAllParentsOfTree(artree, node, arKeys, fullobject);
       }
     }
   } else {
     return arKeys;
   }
 }
+
+function checkIsChild(row, level, parents = [], depth) {
+  let checks = 0;
+  for (let index = 0; index < parents.length; index++) {
+    if (index + 1 < depth && row[`group${index + 1}`].id == parents[index]) {
+      checks++;
+    }
+  }
+
+  return checks === level - 1;
+}
+
+function getGroupValues(arObj, level, parents = [], depth = 0, addkey = "") {
+  const ar = [];
+  for (const groupmap of arObj) {
+    if (parents.length > 0) {
+      if (checkIsChild(groupmap, level, parents, depth)) {
+        parents[level-1] = groupmap[`group${level}`].id;
+        ar.push({
+          title: groupmap[`group${level}`].name,
+          key: `${groupmap.id}_${groupmap[`group${level}`].id}_level_${addkey}`,
+          id: groupmap[`group${level}`].id,
+          cur_level: level,
+          child_parents: _.uniq(parents),
+          isLeaf: depth === level,
+        });
+      }
+    } else {
+      ar.push({
+        title: groupmap[`group${1}`].name,
+        key: `${groupmap.id}_${groupmap[`group${1}`].id}_level_${addkey}`,
+        id: groupmap[`group${1}`].id,
+        cur_level: 1,
+        child_parents: [groupmap[`group${1}`].id],
+      });
+    }
+  }
+
+  return _.uniqBy(ar, "id");
+}
+
+/*==========================END: TREE ================================*/
 
 function getAcronym(text) {
   var acronym = "";
@@ -82,31 +125,33 @@ function getAcronymColor(text) {
 }
 
 function generateGreetings() {
-  var currentHour = moment().format('HH');
+  var currentHour = moment().format("HH");
   if (currentHour >= 5 && currentHour < 12) {
-    return 'Morning';
+    return "Morning";
   } else if (currentHour >= 12 && currentHour < 17) {
-    return 'Afternoon';
+    return "Afternoon";
   } else if (currentHour >= 17 && currentHour > 5) {
-    return 'Evening';
+    return "Evening";
   } else {
-    return 'Hello';
+    return "Hello";
   }
 }
 
-function getUniqueArray(ar1,ar2,key=""){
-  console.log(ar1,ar2,key);
-    if(key!==""){
-      return _.uniqBy(_.concat(ar1,ar2),key);
-    }else{
-      return _.uniq(_.concat(ar1,ar2));
-    }
+function getUniqueArray(ar1, ar2, key = "") {
+  if (key !== "") {
+    return _.uniqBy(_.concat(ar1, ar2), key);
+  } else {
+    return _.uniq(_.concat(ar1, ar2));
+  }
 }
 
 export default {
-  getAccessTokenByState: getAccessTokenByState,
+  getAccessTokenByState,
   getTreeStructure,
   getAllParentsOfTree,
-  getAcronym,getAcronymColor,generateGreetings,
-  getUniqueArray:getUniqueArray
+  getAcronym,
+  getAcronymColor,
+  generateGreetings,
+  getUniqueArray,
+  getGroupValues,
 };
