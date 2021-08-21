@@ -2,6 +2,8 @@ import { AuthRepository, UserRepository } from "../../api";
 import { ErrorMessages, CommonFunctions } from "../../utils";
 import { ErrorCodes } from "../../constants";
 
+import * as AppActions from "../app/actions";
+
 export function loginUser(obj) {
   return async (dispatch, getState) => {
     try {
@@ -50,6 +52,7 @@ export function getUser() {
         permissions_uimenu_tree:CommonFunctions.getTreeStructure(ar_menu_permissions)
       });
 
+      dispatch(AppActions.appsetGroupSettings(userData.app_settings.group_tables));
       dispatch({
         type: "USER_SET_AUTHENTICATED",
         isAuthenticated: true,

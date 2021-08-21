@@ -18,6 +18,7 @@ class CurrentUserResource extends JsonResource
         return [
             "user"=>new UserResource($this),
             "permissions"=>$this->userRole->permissions,
+            "app_settings"=>new AppSettingsResource($this)
         ];
     }
 }
