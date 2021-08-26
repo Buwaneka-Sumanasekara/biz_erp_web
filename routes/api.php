@@ -26,13 +26,23 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/logout', [AuthController::class, 'logout']);
         Route::get('/permissions', [AuthController::class, 'permissions']);
     });  
-});
 
-Route::middleware(['auth:sanctum'])->group(function () {
     Route::prefix("group")->group(function () {
         Route::post('/', [GroupController::class, 'createGroup']);
-    });  
+        Route::prefix("{group_no}")->group(function () {
+            Route::get('/', [GroupController::class, 'getGroupList']); 
+        });
+    });
+
+    Route::prefix("group-mapping")->group(function () {
+        Route::get('/', [GroupController::class, 'getAllGroupMappings']);
+        Route::post('/', [GroupController::class, 'createGroupMapping']);
+        Route::prefix("{group1_id}")->group(function () {
+            Route::get('/', [GroupController::class, 'getAllGroupMappingsBelongstoGroup1Id']); 
+        });
+    });
 });
+
 
 
 Route::prefix("test")->group(function () {
