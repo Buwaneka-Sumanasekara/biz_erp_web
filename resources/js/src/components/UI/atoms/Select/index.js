@@ -9,7 +9,7 @@ const { Option } = Select;
 
 const SelectComponent = (props) => {
 
-    const {value_key,id_key,external_key_id} = props;
+    const {value_key,id_key,external_key_id,isLoading} = props;
 
   useEffect(() => {}, []);
 
@@ -45,6 +45,7 @@ const SelectComponent = (props) => {
       filterOption={(input, option) =>
         option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
       }
+      loading={isLoading}
     >
       {props.data &&
         props.data.map((item, i)=> {
@@ -64,7 +65,8 @@ SelectComponent.defaultProps = {
   value_key:"",
   id_key:"",
   external_key_id:"",
-  onSelectValue:()=>{}  
+  onSelectValue:()=>{},
+  isLoading:false  
 };
 
 SelectComponent.propTypes = {
@@ -74,7 +76,8 @@ SelectComponent.propTypes = {
   value_key:PropTypes.string,
   id_key:PropTypes.string,
   external_key_id:PropTypes.string,
-  onSelectValue:PropTypes.func
+  onSelectValue:PropTypes.func,
+  isLoading:PropTypes.bool
 
 };
 

@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import { Row, Col } from "antd";
+import { Row, Col, Button, Space } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+
 import { Select } from "../../atoms";
 
 import { CommonFunctions } from "../../../../utils";
@@ -14,6 +16,7 @@ const GroupMappingCreate = (props) => {
 
   const [ObjSelectedValues, setSelectedValues] = useState({});
   const [GroupsArObj, setGroupsArObj] = useState({});
+  const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
     loadAllGroups();
@@ -53,8 +56,39 @@ const GroupMappingCreate = (props) => {
     props.onValuesChange(ObjSelectedValues_updated);
   }
 
+  function saveGroupMapping() {
+
+    if (
+      Object.values(ObjSelectedValues).length ===
+      Object.values(GroupsArObj).length
+    ) {
+      // console.log(ObjSelectedValues);
+      const groupMapObj = {};
+      for (const key in ObjSelectedValues) {
+        if (Object.hasOwnProperty.call(ObjSelectedValues, key)) {
+          const element = ObjSelectedValues[key];
+          groupMapObj[`group_${key}`] = element.id;
+        }
+      }
+
+      setLoading(true);
+
+      props
+        .saveGroupMapping(groupMapObj)
+        .then((res) => {
+          props.onSaveSuccess("Save group mapping successfully");
+        })
+        .catch((er) => {
+          props.onSaveError(er.message);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }
+
   return (
-    <Row>
+    <Row align={"middle"} justify="space-between" gutter={8}>
       {Object.values(GroupsArObj).map((value, index) => {
         return (
           <Col key={`${value.tableInfo.display_name}_${index}`}>
@@ -68,10 +102,26 @@ const GroupMappingCreate = (props) => {
               id_key={"id"}
               placeholder={`Select from ${value.tableInfo.display_name}`}
               data={value.group_data}
+              loading={isLoading}
             />
           </Col>
         );
       })}
+      <Col>
+        <Row justify={"end"}>
+          <Col>
+            <Button
+              type="primary"
+              shape="circle"
+              size={"large"}
+              onClick={() => saveGroupMapping()}
+              loading={isLoading}
+            >
+              {"+"}
+            </Button>
+          </Col>
+        </Row>
+      </Col>
     </Row>
   );
 };
@@ -80,6 +130,8 @@ const GroupMappingCreate = (props) => {
 GroupMappingCreate.defaultProps = {
   placeholder: "",
   onValuesChange: () => {},
+  onSaveSuccess: () => {},
+  onSaveError: () => {},
 };
 
 GroupMappingCreate.propTypes = {
@@ -92,6 +144,7 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = {
   getAllGroups: ProductActions.getAllGroups,
+  saveGroupMapping: ProductActions.saveGroupMapping,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupMappingCreate);

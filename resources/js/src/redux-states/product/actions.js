@@ -108,3 +108,31 @@ export function getAllGroupMappingByGroup1(group1_id) {
     }
   };
 }
+
+
+export function saveGroupMapping(obj) {
+  return async (dispatch, getState) => {
+    try {
+      console.log(obj);
+      const token = await CommonFunctions.getAccessTokenByState(getState);
+      const apiResponse = await GroupMappingRepository.save(token,obj);
+      const arGroups = apiResponse.data;
+      return arGroups["data"];
+    } catch (error) {
+      const errorObj = error.response.data.error;
+
+      if (errorObj.code === ErrorCodes.UNAUTHORIZED) {
+        dispatch({
+          type: "USER_SET_AUTHENTICATED",
+          isAuthenticated: false,
+        });
+      } else {
+        throw new ErrorMessages.CustomError(
+          `[saveGroupMapping][${error.response.status}]${errorObj.code}`,
+          `${errorObj.message}`,
+          "src/redux-states/product/actions.js:saveGroupMapping"
+        );
+      }
+    }
+  };
+}

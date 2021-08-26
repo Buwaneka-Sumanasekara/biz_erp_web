@@ -90,9 +90,11 @@ class GroupController extends Controller
 
             $count=$GroupMapping->count();
 
+              
             if ($count === 0) {
+              
                 PmGroupMapping::create([
-                 'id'=> ((int)$GroupMapping->max("id")+1),  
+                 'id'=> ((int)PmGroupMapping::max("id")+1),  
                 'pm_group1_id'=>$request->group_1,
                 'pm_group2_id'=>$request->group_2,
                 'pm_group3_id'=>$request->group_3,

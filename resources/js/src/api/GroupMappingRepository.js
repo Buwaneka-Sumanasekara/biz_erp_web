@@ -9,4 +9,7 @@ export default {
   byGroup1Id(token,group1_id) {
     return AuthAxiosInstance(token).get(`${resource}/${group1_id}`);
   },
+  save(token,payload) {
+    return AuthAxiosInstance(token).post(`${resource}`,payload);
+  },
 };
