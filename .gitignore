@@ -15,6 +15,9 @@ public/hot
 public_html/storage
 public_html/hot
 
+#laravel 8
+storage/framework/*
+
 storage/*.key
 .env
 Homestead.yaml
