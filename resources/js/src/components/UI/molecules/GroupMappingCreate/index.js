@@ -62,7 +62,6 @@ const GroupMappingCreate = (props) => {
       Object.values(ObjSelectedValues).length ===
       Object.values(GroupsArObj).length
     ) {
-      // console.log(ObjSelectedValues);
       const groupMapObj = {};
       for (const key in ObjSelectedValues) {
         if (Object.hasOwnProperty.call(ObjSelectedValues, key)) {

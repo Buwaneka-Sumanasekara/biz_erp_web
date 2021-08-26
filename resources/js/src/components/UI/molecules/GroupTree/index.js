@@ -26,7 +26,6 @@ const GroupTree = (props) => {
   }
 
   function onLoadData({ child_parents, cur_level, key, children, pos }) {
-    console.log("onLoadData",child_parents);
     return new Promise((resolve) => {
       if (children) {
         resolve();

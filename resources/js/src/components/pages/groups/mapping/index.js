@@ -59,9 +59,10 @@ const GroupMappingPage = (props) => {
               <GroupMappingCreate
                 onValuesChange={(val) => onValueChangeSelectGroup(val)}
                 isLoading={isLoading}
-                onSaveSuccess={(msg) =>
-                  value.showAlert(Globals.MESSAGE_TYPES.SUCCESS, msg)
-                }
+                onSaveSuccess={(msg) => {
+                  value.showAlert(Globals.MESSAGE_TYPES.SUCCESS, msg);
+                  onLoadGroupMappingData();
+                }}
                 onSaveError={(msg) =>
                   value.showAlert(Globals.MESSAGE_TYPES.ERROR, msg)
                 }
