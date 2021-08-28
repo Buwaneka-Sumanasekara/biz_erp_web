@@ -5,18 +5,14 @@ import { Row, Col, Space } from "antd";
 import DefaultTemplate from "../../../templates/default";
 import { Globals } from "../../../../constants";
 
-import {
-  GroupMappingTable,
-  GroupTree,
-  GroupMappingCreate,
-} from "../../../UI/molecules";
+
 
 //actions
 
 
 
 
-const GroupMappingPage = (props) => {
+const SuppliersAllPage = (props) => {
   const { match } = props;
 
   const [isLoading, setLoading] = useState(false);
