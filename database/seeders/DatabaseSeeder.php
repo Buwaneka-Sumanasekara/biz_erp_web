@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             UserPermissionsSeeder::class,
             UserSeeder::class,
             GroupSeeder::class,
+            SuppliersSeeder::class,
         ]);
     }
 }

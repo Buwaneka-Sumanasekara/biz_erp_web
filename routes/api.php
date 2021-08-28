@@ -47,6 +47,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/', [SupplierController::class, 'getSupplierList']);
         Route::get('/{type}', [SupplierController::class, 'getSupplierList'])->where('type', 'active');
         Route::post('/', [SupplierController::class, 'createSupplier']);
+        Route::put('/{id}', [SupplierController::class, 'updateSupplier']);
+        
     });
 
 });

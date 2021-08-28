@@ -16,6 +16,8 @@ use Illuminate\Validation\Rule;
 
 use App\Http\Resources\SupplierResouce;
 
+use App\Exceptions\ResourceNotFoundException;
+
 class SupplierController extends Controller
 {
     public function getSupplierList(Request $request,String $type="")
@@ -69,6 +71,44 @@ class SupplierController extends Controller
            } 
     }
 
+
+    public function updateSupplier(Request $request,$id)
+    {
+        try {
+            $request->validate([
+                'name' => 'required',
+                'contact1' => 'nullable|numeric|min:10',
+                'contact2' => 'nullable|numeric|min:10',
+                'email_address' => 'nullable|email',
+            ],[
+                'contact1.min:10' => 'Phone number 1 not valid',
+                'contact2.min' => 'Phone number 2 not valid',
+                'contact1.numeric' => 'Phone number 1 not valid',
+                'contact2.numeric' => 'Phone number 2 not valid',
+                'email_address.email' => 'Email not valid',
+            ]); 
+  
+                
+            $supplier = SmSupplier::find($id);
+            dd($supplier->canRemove());
+            if($supplier!==null && $supplier->canRemove()){
+                $supplier->name= $request->get('name');
+                $supplier->active= $request->get('active');
+                $supplier->contact1= $request->get('contact1');
+                $supplier->contact2= $request->get('contact2');
+                $supplier->email_address= $request->get('email_address');
+                 
+                return new GeneralResource((object)array("message"=>"Supplier updated successfully"));
+            
+            }else{
+                throw new ResourceNotFoundException("Supplier");
+            }
+            
+            
+           }  catch (\Exception $e) {
+            return (new ErrorResource($e));
+           } 
+    }
 
 
 }
