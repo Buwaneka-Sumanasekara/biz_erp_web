@@ -90,16 +90,16 @@ class SupplierController extends Controller
   
                 
             $supplier = SmSupplier::find($id);
-            dd($supplier->canRemove());
             if($supplier!==null && $supplier->canRemove()){
-                $supplier->name= $request->get('name');
-                $supplier->active= $request->get('active');
-                $supplier->contact1= $request->get('contact1');
-                $supplier->contact2= $request->get('contact2');
-                $supplier->email_address= $request->get('email_address');
-                 
-                return new GeneralResource((object)array("message"=>"Supplier updated successfully"));
-            
+
+                    $supplier->name= $request->get('name');
+                    $supplier->active= $request->get('active');
+                    $supplier->contact1= $request->get('contact1');
+                    $supplier->contact2= $request->get('contact2');
+                    $supplier->email_address= $request->get('email_address');
+                     
+                    return new GeneralResource((object)array("message"=>"Supplier updated successfully"));
+              
             }else{
                 throw new ResourceNotFoundException("Supplier");
             }
