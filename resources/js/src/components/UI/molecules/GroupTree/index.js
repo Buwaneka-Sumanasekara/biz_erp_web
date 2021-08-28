@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import PropTypes, { func } from "prop-types";
 import { Tree } from "antd";
+import {
+  LoadingOutlined,
+} from '@ant-design/icons';
 
 import { CommonFunctions } from "../../../../utils";
 
@@ -78,6 +81,10 @@ const GroupTree = (props) => {
     setExpandedKeys(expandedKeys);
   }
 
+  if(props.isLoading){
+    <LoadingOutlined/>
+  }
+
   return (
     <Tree
       onExpand={(expandedKeys, info) => onExpand(expandedKeys, info)}
@@ -90,9 +97,13 @@ const GroupTree = (props) => {
 };
 
 // Specifies the default values for props:
-GroupTree.defaultProps = {};
+GroupTree.defaultProps = {
+  isLoading:false
+};
 
-GroupTree.propTypes = {};
+GroupTree.propTypes = {
+  isLoading:PropTypes.bool
+};
 
 const mapStateToProps = (state) => ({
   arGroupTableDetails: state.app.arGroupTableDetails,

@@ -73,11 +73,11 @@ class GroupController extends Controller
                 'group_6' => 'required|exists:pm_group6,id',
             ],[
                 'group_1.required' => 'Group 1 is required.',
-                'group_2.required' => 'Group 1 is required.',
-                'group_3.required' => 'Group 1 is required.',
-                'group_4.required' => 'Group 1 is required.',
-                'group_5.required' => 'Group 1 is required.',
-                'group_6.required' => 'Group 1 is required.',
+                'group_2.required' => 'Group 2 is required.',
+                'group_3.required' => 'Group 3 is required.',
+                'group_4.required' => 'Group 4 is required.',
+                'group_5.required' => 'Group 5 is required.',
+                'group_6.required' => 'Group 6 is required.',
             ]); 
 
             $GroupMapping=PmGroupMapping::where([["pm_group1_id","=",$request->group_1],

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\SupplierController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/', [GroupController::class, 'getAllGroupMappingsBelongstoGroup1Id']); 
         });
     });
+
+    Route::prefix("suppliers")->group(function () {
+        Route::get('/', [SupplierController::class, 'getSupplierList']);
+        Route::get('/{type}', [SupplierController::class, 'getSupplierList'])->where('type', 'active');
+        Route::post('/', [SupplierController::class, 'createSupplier']);
+    });
+
 });
 
 

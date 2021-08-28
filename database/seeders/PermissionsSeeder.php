@@ -41,10 +41,17 @@ class PermissionsSeeder extends Seeder
 
             ["id"=>1120,"name"=>"Group Mapping","display_name"=>"Group Mapping","is_tab"=>1,"parent_id"=>1100,"url_path"=>"/product/group-mapping","icon"=>"",'order_no'=>2],
            
-            ["id"=>1130,"name"=>"Products","display_name"=>"Products","is_tab"=>1,"parent_id"=>1100,"url_path"=>"/product","icon"=>"",'order_no'=>3],
-            ["id"=>1131,"name"=>"Products","display_name"=>"Create Product","is_tab"=>1,"parent_id"=>1130,"url_path"=>"/product/create","icon"=>"",'order_no'=>1],
+            ["id"=>1130,"name"=>"All Products","display_name"=>"All Products","is_tab"=>1,"parent_id"=>1100,"url_path"=>"/product","icon"=>"",'order_no'=>3],
+            ["id"=>1131,"name"=>"Products","display_name"=>"Create Product","is_tab"=>0,"parent_id"=>1130,"url_path"=>"/product/create","icon"=>"",'order_no'=>1],
 
-
+             //1200 - 1299
+            ["id"=>1200,"name"=>"Supplier Management","display_name"=>"Suppliers","is_tab"=>1,"parent_id"=>1200,"url_path"=>"","icon"=>"",'order_no'=>1],
+            ["id"=>1201,"name"=>"All Suppliers","display_name"=>"All Supplier","is_tab"=>1,"parent_id"=>1200,"url_path"=>"/suppliers","icon"=>"",'order_no'=>1],
+            
+             //1300 - 1399
+             ["id"=>1300,"name"=>"Customer Management","display_name"=>"Customers","is_tab"=>1,"parent_id"=>1300,"url_path"=>"","icon"=>"",'order_no'=>1],
+             ["id"=>1301,"name"=>"All Customers","display_name"=>"All Supplier","is_tab"=>1,"parent_id"=>1300,"url_path"=>"","icon"=>"",'order_no'=>1],
+             
         ];
 
 
