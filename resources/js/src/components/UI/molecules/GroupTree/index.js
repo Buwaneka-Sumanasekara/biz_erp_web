@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import PropTypes, { func } from "prop-types";
+import PropTypes from "prop-types";
 import { Tree, Row, Col } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
@@ -111,11 +111,9 @@ const GroupTree = (props) => {
   if (isLoading) {
     return (
       <Row align={"middle"} justify={"center"}>
-     
-            <Col className={"pt-5"}>
-              <LoadingOutlined />
-            </Col>
-         
+        <Col className={"pt-5"}>
+          <LoadingOutlined />
+        </Col>
       </Row>
     );
   }

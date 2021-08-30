@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { Space } from "antd";
 import AuthTemplate from "../../templates/auth";
 
 import { FormLogin } from "../../UI/molecules";
@@ -11,7 +10,6 @@ import { Alert } from "../../UI/atoms";
 import * as UserActions from "../../../redux-states/user/actions";
 
 const SCREEN_LOGIN = "screen_login";
-const SCREEN_FORGET_PASS = "screen_forgetpass";
 
 const LoginPage = (props) => {
   let history = useHistory();

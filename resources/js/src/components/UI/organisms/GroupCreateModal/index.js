@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Modal } from "antd";
 
@@ -7,17 +7,20 @@ import { FormGroupCreate } from "../../molecules";
 const GroupCreateModalComponent = (props) => {
   const { GroupName, GroupNo, isVisible } = props;
 
-
-  useEffect(() => {
-
-}, [isVisible]);
+  useEffect(() => {}, [isVisible]);
 
   function onGroupCreated() {
     props.onSuccessAndClose();
   }
 
   return (
-    <Modal title={`Create Group | ${GroupName}`} centered visible={isVisible} onCancel={()=>props.onClosed()} footer={null}>
+    <Modal
+      title={`Create Group | ${GroupName}`}
+      centered
+      visible={isVisible}
+      onCancel={() => props.onClosed()}
+      footer={null}
+    >
       <FormGroupCreate GroupNo={GroupNo} onSuccess={() => onGroupCreated()} />
     </Modal>
   );

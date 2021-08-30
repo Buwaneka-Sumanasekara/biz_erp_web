@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
-import { Container, Row, Col, Image } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 
 import { Header } from "../../UI/organisms";
 
 const HomeTemplate = (props) => {
-  const { children, title, subTitle } = props;
+  const { children } = props;
 
   return (
     <Container fluid>

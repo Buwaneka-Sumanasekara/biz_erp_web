@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Table, Checkbox } from "antd";
-
-import { Globals } from "../../../../constants";
-
+import { Table } from "antd";
 //actions
 import * as ProductActions from "../../../../redux-states/product/actions";
-
 
 const GroupMappingTable = (props) => {
   const { arGroupTableDetails } = props;
@@ -18,9 +14,6 @@ const GroupMappingTable = (props) => {
   useEffect(() => {
     onLoadGroupMappingData();
   }, [props.lastRefreshTime]);
-
-
-
 
   function onLoadGroupMappingData() {
     setLoading(true);
@@ -37,8 +30,6 @@ const GroupMappingTable = (props) => {
         setLoading(false);
       });
   }
-
-
 
   function getColumns() {
     const arCol = [];
@@ -84,13 +75,13 @@ const GroupMappingTable = (props) => {
 
 // Specifies the default values for props:
 GroupMappingTable.defaultProps = {
-  lastRefreshTime:"",
-  onLoading:()=>{}
+  lastRefreshTime: "",
+  onLoading: () => {},
 };
 
 GroupMappingTable.propTypes = {
-  lastRefreshTime:PropTypes.string,
-  onLoading:PropTypes.func
+  lastRefreshTime: PropTypes.string,
+  onLoading: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({

@@ -1,7 +1,7 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import {Table,Checkbox} from "antd";
+import { Table, Checkbox } from "antd";
 
 import * as ProductActions from "../../../../redux-states/product/actions";
 
@@ -12,7 +12,7 @@ const GroupListTable = (props) => {
 
   useEffect(() => {
     onLoadGroupData(props.GroupNo);
-  }, [props.GroupNo,props.lastRefreshTime]);
+  }, [props.GroupNo, props.lastRefreshTime]);
 
   function onLoadGroupData(GroupId) {
     setLoading(true);
@@ -33,37 +33,41 @@ const GroupListTable = (props) => {
 
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
     },
     {
-      title: 'Active',
-      dataIndex: 'active',
-      key: 'active',
-      render: text => <Checkbox checked={text==1} />
+      title: "Active",
+      dataIndex: "active",
+      key: "active",
+      render: (text) => <Checkbox checked={text == 1} />,
     },
     {
-      title: 'Created date',
-      dataIndex: 'created_at',
-      key: 'created_at',
+      title: "Created date",
+      dataIndex: "created_at",
+      key: "created_at",
     },
   ];
   return (
-<Table dataSource={arGroupData} columns={columns} loading={isLoading} rowKey={"id"} />
+    <Table
+      dataSource={arGroupData}
+      columns={columns}
+      loading={isLoading}
+      rowKey={"id"}
+    />
   );
 };
 
 // Specifies the default values for props:
 GroupListTable.defaultProps = {
-  lastRefreshTime:""
+  lastRefreshTime: "",
 };
 
 GroupListTable.propTypes = {
-  GroupNo:PropTypes.string.isRequired,
-  lastRefreshTime:PropTypes.string
+  GroupNo: PropTypes.string.isRequired,
+  lastRefreshTime: PropTypes.string,
 };
-
 
 const mapStateToProps = (state) => ({});
 const mapDispatchToProps = {
@@ -71,5 +75,3 @@ const mapDispatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupListTable);
-
-

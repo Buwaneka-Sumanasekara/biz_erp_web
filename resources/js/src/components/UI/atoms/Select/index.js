@@ -5,18 +5,17 @@ import { Select } from "antd";
 
 const { Option } = Select;
 
-
-
 const SelectComponent = (props) => {
-
-    const {value_key,id_key,external_key_id,isLoading} = props;
+  const { value_key, id_key, external_key_id, isLoading } = props;
 
   useEffect(() => {}, []);
 
   function onChange(value) {
-//    console.log(`selected ${value}`,props.data);
+    //    console.log(`selected ${value}`,props.data);
 
-    const findValue=props.data.find(element => (id_key!==""?element[id_key]==value:element==value));
+    const findValue = props.data.find((element) =>
+      id_key !== "" ? element[id_key] == value : element == value
+    );
     props.onSelectValue(findValue);
   }
 
@@ -48,10 +47,14 @@ const SelectComponent = (props) => {
       loading={isLoading}
     >
       {props.data &&
-        props.data.map((item, i)=> {
-           const value=(value_key!==""?item[value_key]:item);  
-           const key=(id_key!==""?item[id_key]:item);  
-          return   <Option key={`option_${external_key_id}_${key}`}  value={key}>{(value!==""?value:"-")}</Option>;
+        props.data.map((item, i) => {
+          const value = value_key !== "" ? item[value_key] : item;
+          const key = id_key !== "" ? item[id_key] : item;
+          return (
+            <Option key={`option_${external_key_id}_${key}`} value={key}>
+              {value !== "" ? value : "-"}
+            </Option>
+          );
         })}
     </Select>
   );
@@ -61,24 +64,23 @@ const SelectComponent = (props) => {
 SelectComponent.defaultProps = {
   placeholder: "",
   width: 200,
-  data:[],
-  value_key:"",
-  id_key:"",
-  external_key_id:"",
-  onSelectValue:()=>{},
-  isLoading:false  
+  data: [],
+  value_key: "",
+  id_key: "",
+  external_key_id: "",
+  onSelectValue: () => {},
+  isLoading: false,
 };
 
 SelectComponent.propTypes = {
   placeholder: PropTypes.string,
   width: PropTypes.number,
-  data:PropTypes.array,
-  value_key:PropTypes.string,
-  id_key:PropTypes.string,
-  external_key_id:PropTypes.string,
-  onSelectValue:PropTypes.func,
-  isLoading:PropTypes.bool
-
+  data: PropTypes.array,
+  value_key: PropTypes.string,
+  id_key: PropTypes.string,
+  external_key_id: PropTypes.string,
+  onSelectValue: PropTypes.func,
+  isLoading: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => ({});

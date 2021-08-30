@@ -1,33 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 
-import * as UserActions from "../../../../redux-states/user/actions";
+import { PageHeader, Tooltip, Button } from "antd";
+import { TopMenu } from "../../molecules";
+import { PoweroffOutlined } from "@ant-design/icons";
+
 import CommonFunctions from "../../../../utils/CommonFunctions";
-
-import {TopMenu} from "../../molecules"
-
-import { PageHeader,Tooltip,Button } from "antd";
-import { PoweroffOutlined } from '@ant-design/icons';
+//actions
+import * as UserActions from "../../../../redux-states/user/actions";
 
 const HeaderComponent = (props) => {
-  const {  profile,children } = props;
+  const { profile, children } = props;
 
-  const [isLoading,setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
-  function _onlogout(){
+  function _onlogout() {
     setLoading(true);
-    props.logoutUser().finally(()=>{
+    props.logoutUser().finally(() => {
       setLoading(false);
-    })
+    });
   }
-
 
   const Acronym = CommonFunctions.getAcronym(
     `${profile.firstname} ${profile.lastname}`
   );
   return (
-
     <PageHeader
       title="Welcome"
       subTitle={`${profile.firstname} ${profile.lastname}`}
@@ -40,20 +37,17 @@ const HeaderComponent = (props) => {
       }}
       extra={[
         <Tooltip placement="bottom" title={"Logout"}>
-
-<Button
-          type="primary"
-          icon={<PoweroffOutlined />}
-        
-          onClick={() =>_onlogout()}
-        />
-        {/* <PoweroffOutlined style={{fontSize:30}} /> */}
-        </Tooltip>
+          <Button
+            type="primary"
+            icon={<PoweroffOutlined />}
+            onClick={() => _onlogout()}
+          />
+        </Tooltip>,
       ]}
     >
-      <TopMenu/>
+      <TopMenu />
       {children}
-      </PageHeader>
+    </PageHeader>
   );
 };
 

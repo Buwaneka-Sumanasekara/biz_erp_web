@@ -7,8 +7,12 @@ import GroupMappingTable from "./GroupMappingTable";
 import GroupTree from "./GroupTree";
 import GroupMappingCreate from "./GroupMappingCreate";
 
-
-
 export {
-  FormLogin,TopMenu,FormGroupCreate,GroupListTable,GroupMappingTable,GroupTree,GroupMappingCreate
-}
+  FormLogin,
+  TopMenu,
+  FormGroupCreate,
+  GroupListTable,
+  GroupMappingTable,
+  GroupTree,
+  GroupMappingCreate,
+};

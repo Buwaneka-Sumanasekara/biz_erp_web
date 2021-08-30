@@ -2,13 +2,11 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import { Row, Col, Button, Space } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Row, Col, Button } from "antd";
 
 import { Select } from "../../atoms";
 
-import { CommonFunctions } from "../../../../utils";
-
+//actions
 import * as ProductActions from "../../../../redux-states/product/actions";
 
 const GroupMappingCreate = (props) => {
@@ -57,7 +55,6 @@ const GroupMappingCreate = (props) => {
   }
 
   function saveGroupMapping() {
-
     if (
       Object.values(ObjSelectedValues).length ===
       Object.values(GroupsArObj).length

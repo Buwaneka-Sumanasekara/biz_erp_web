@@ -8,7 +8,6 @@ import CommonFunctions from "../../../../utils/CommonFunctions";
 
 import { Menu } from "antd";
 
-
 const { SubMenu } = Menu;
 // submenu keys of first level
 

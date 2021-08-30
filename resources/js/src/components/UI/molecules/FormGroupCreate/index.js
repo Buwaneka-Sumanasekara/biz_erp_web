@@ -13,15 +13,9 @@ const FormGroupCreate = (props) => {
   const [Error, setError] = useState("");
   const [form] = Form.useForm();
 
-
-  
-  useEffect(() => {
-
-  }, [Error]);
-
+  useEffect(() => {}, [Error]);
 
   const onFinish = (values) => {
-   
     values["group_no"] = parseInt(passedGroupNo);
     setLoading(true);
     setError("");
@@ -30,7 +24,6 @@ const FormGroupCreate = (props) => {
       .then((res) => {
         form.resetFields();
         props.onSuccess();
-
       })
       .catch((er) => {
         console.log(er);
@@ -81,11 +74,11 @@ const FormGroupCreate = (props) => {
 
 // Specifies the default values for props:
 FormGroupCreate.defaultProps = {
-  onSuccess:()=>{}
+  onSuccess: () => {},
 };
 
 FormGroupCreate.propTypes = {
-  onSuccess:PropTypes.func
+  onSuccess: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({});

@@ -1,16 +1,15 @@
-import React,{useEffect} from "react";
-import {connect} from 'react-redux';
-import * as UserActions from "../../../redux-states/user/actions";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
 
 import HomeTemplate from "../../templates/home";
 
-const HomePage = (props) => {
+//actions
+import * as UserActions from "../../../redux-states/user/actions";
 
-    useEffect(() => {
-   
-    }, []);
-  
-   
+
+
+const HomePage = (props) => {
+  useEffect(() => {}, []);
 
   return (
     <HomeTemplate>
@@ -19,15 +18,9 @@ const HomePage = (props) => {
   );
 };
 
-
-const mapStateToProps = state => ({
- 
-});
+const mapStateToProps = (state) => ({});
 const mapDispatchToProps = {
-  logoutUser:UserActions.logoutUser
+  logoutUser: UserActions.logoutUser,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(HomePage);
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

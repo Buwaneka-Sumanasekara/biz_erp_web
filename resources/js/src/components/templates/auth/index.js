@@ -20,9 +20,7 @@ const AuthTemplate = (props) => {
                   "login-card-right-wrap text-wrap p-4 p-lg-5 text-center d-flex align-items-center order-md-last"
                 }
               >
-             
-                  <Image className={"logo"} src="images/logo.png" />
-                
+                <Image className={"logo"} src="images/logo.png" />
               </div>
               <div className={"login-wrap p-4 p-lg-5"}>
                 <div className={"d-flex"}>

@@ -1,21 +1,18 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Row, Col, Space } from "antd";
-
-//context
-import { GlobalAlertContext } from "../../../../context/GlobalAlertContext";
+import { Row, Col } from "antd";
 
 import DefaultTemplate from "../../../templates/default";
-
 import {
   GroupMappingTable,
   GroupTree,
   GroupMappingCreate,
 } from "../../../UI/molecules";
 
-
 import { CommonFunctions } from "../../../../utils";
 import { Globals } from "../../../../constants";
+//context
+import { GlobalAlertContext } from "../../../../context/GlobalAlertContext";
 
 const GroupMappingPage = (props) => {
   const { match } = props;
@@ -52,10 +49,16 @@ const GroupMappingPage = (props) => {
 
       <Row>
         <Col span={14}>
-          <GroupMappingTable lastRefreshTime={lastRefreshTime} onLoading={(isLoading)=>setIsLoadingTable(isLoading)} />
+          <GroupMappingTable
+            lastRefreshTime={lastRefreshTime}
+            onLoading={(isLoading) => setIsLoadingTable(isLoading)}
+          />
         </Col>
         <Col span={8} offset={2}>
-          <GroupTree lastRefreshTime={lastRefreshTime} onLoading={(isLoading)=>setIsLoadingTree(isLoading)} />
+          <GroupTree
+            lastRefreshTime={lastRefreshTime}
+            onLoading={(isLoading) => setIsLoadingTree(isLoading)}
+          />
         </Col>
       </Row>
     </DefaultTemplate>
@@ -70,8 +73,6 @@ GroupMappingPage.defaultProps = {
 GroupMappingPage.propTypes = {};
 
 const mapStateToProps = (state) => ({});
-const mapDispatchToProps = {
- 
-};
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupMappingPage);

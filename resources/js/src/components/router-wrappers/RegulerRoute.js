@@ -5,27 +5,30 @@ import { connect } from "react-redux";
 import * as UserActions from "../../redux-states/user/actions";
 
 function RegulerRoute(props) {
-  const {component:Component,isRehydrated,isAuthenticated,...restOfProps}=props;
+  const {
+    component: Component,
+    isRehydrated,
+    isAuthenticated,
+    ...restOfProps
+  } = props;
 
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    if(isRehydrated){
-        return setLoading(false);
+    if (isRehydrated) {
+      return setLoading(false);
     }
-    return; 
+    return;
   }, [isRehydrated]);
 
-
-
-  if(isLoading){
-       return <div>Loading...</div> 
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
   return (
     <Route
       {...restOfProps}
       render={(props) =>
-        isAuthenticated ? <Redirect to="/" />: <Component {...props} /> 
+        isAuthenticated ? <Redirect to="/" /> : <Component {...props} />
       }
     />
   );
@@ -33,10 +36,10 @@ function RegulerRoute(props) {
 
 const mapStateToProps = (state) => ({
   isRehydrated: state.app.isRehydrated,
-  isAuthenticated:state.user.isAuthenticated
+  isAuthenticated: state.user.isAuthenticated,
 });
 const mapDispatchToProps = {
-    getUser: UserActions.getUser
+  getUser: UserActions.getUser,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegulerRoute);
