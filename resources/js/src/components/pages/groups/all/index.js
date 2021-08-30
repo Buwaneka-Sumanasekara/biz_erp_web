@@ -6,51 +6,32 @@ import DefaultTemplate from "../../../templates/default";
 import { GroupListTable } from "../../../UI/molecules";
 import { GroupCreateModal } from "../../../UI/organisms";
 
-import * as ProductActions from "../../../../redux-states/product/actions";
+import { CommonFunctions } from "../../../../utils";
 
 const GroupCreatePage = (props) => {
   const { match } = props;
   const [isModalVisible, setModalVisible] = useState(false);
-  const [isLoading, setLoading] = useState(false);
-  const [Error, setError] = useState("");
-  const [arGroupData, setGroupArray] = useState([]);
+  const [lastRefreshTime, setLastRefreshTime] = useState("");
 
   const GroupId = match.params.id;
-
-  useEffect(() => {
-    onLoadGroupData();
-  }, [GroupId]);
-
-  function onLoadGroupData() {
-    setLoading(true);
-    setError("");
-    props
-      .getAllGroups(GroupId)
-      .then((res) => {
-        console.log(res);
-        setGroupArray(res);
-      })
-      .catch((er) => {
-        setError(er.message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }
 
   return (
     <DefaultTemplate
       title={`Group - Level ${GroupId}`}
-      extra={[<Button key={1} onClick={()=>setModalVisible(true)} >{"New"}</Button>]}
+      extra={[
+        <Button key={1} onClick={() => setModalVisible(true)}>
+          {"New"}
+        </Button>,
+      ]}
     >
-      <GroupListTable data={arGroupData} isLoading={isLoading} />
+      <GroupListTable GroupNo={GroupId} lastRefreshTime={lastRefreshTime} />
       <GroupCreateModal
-      GroupNo={GroupId}
-      GroupName={`Level ${GroupId}`}
+        GroupNo={GroupId}
+        GroupName={`Level ${GroupId}`}
         isVisible={isModalVisible}
         onSuccessAndClose={() => {
-          onLoadGroupData();
           setModalVisible(false);
+          setLastRefreshTime(CommonFunctions.getCurrentTime("X"));
         }}
         onClosed={() => setModalVisible(false)}
       />
@@ -59,8 +40,6 @@ const GroupCreatePage = (props) => {
 };
 
 const mapStateToProps = (state) => ({});
-const mapDispatchToProps = {
-  getAllGroups: ProductActions.getAllGroups,
-};
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupCreatePage);

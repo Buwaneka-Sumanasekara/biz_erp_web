@@ -7,13 +7,20 @@ import CommonFunctions from "../../../../utils/CommonFunctions";
 
 import {TopMenu} from "../../molecules"
 
-import { PageHeader,Tooltip } from "antd";
+import { PageHeader,Tooltip,Button } from "antd";
 import { PoweroffOutlined } from '@ant-design/icons';
 
 const HeaderComponent = (props) => {
   const {  profile,children } = props;
 
+  const [isLoading,setLoading] = useState(false);
 
+  function _onlogout(){
+    setLoading(true);
+    props.logoutUser().finally(()=>{
+      setLoading(false);
+    })
+  }
 
 
   const Acronym = CommonFunctions.getAcronym(
@@ -33,7 +40,14 @@ const HeaderComponent = (props) => {
       }}
       extra={[
         <Tooltip placement="bottom" title={"Logout"}>
-        <PoweroffOutlined style={{fontSize:30}} />
+
+<Button
+          type="primary"
+          icon={<PoweroffOutlined />}
+        
+          onClick={() =>_onlogout()}
+        />
+        {/* <PoweroffOutlined style={{fontSize:30}} /> */}
         </Tooltip>
       ]}
     >

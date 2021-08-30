@@ -1,15 +1,35 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Form, Input, Button, Checkbox } from "antd";
 
 
+import * as UserActions from "../../../../redux-states/user/actions";
+
 const FormLogin = (props) => {
 
-  const {isLoading} = props;
+  const [isLoading, setLoading] = useState(false);
 
-  const onFinish = (values) => {
-    props.onSubmit(values);
-  };
+  useEffect(() => {}, []);
+
+  function onUserLogin(values) {
+    setLoading(true);
+    props.onError("");
+    props
+      .loginUser({ username: values.username, password: values.password })
+      .then((res) => {
+       props.onSuccess();
+      })
+      .catch((er) => {
+        props.onError(er.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
+
+
+  
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -21,7 +41,7 @@ const FormLogin = (props) => {
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 16 }}
       initialValues={{ remember: true }}
-      onFinish={onFinish}
+      onFinish={onUserLogin}
       onFinishFailed={onFinishFailed}
     >
       <Form.Item
@@ -51,13 +71,19 @@ const FormLogin = (props) => {
 
 // Specifies the default values for props:
 FormLogin.defaultProps = {
-  onSubmit: () => {},
-  isLoading: false,
+  onSuccess: () => {},
+  onError:()=>{}
 };
 
 FormLogin.propTypes = {
-  onSubmit: PropTypes.func,
-  isLoading: PropTypes.bool,
+  onSuccess: PropTypes.func,
+  onError:PropTypes.func
 };
 
-export default FormLogin;
+
+const mapStateToProps = (state) => ({});
+const mapDispatchToProps = {
+  loginUser: UserActions.loginUser,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FormLogin);

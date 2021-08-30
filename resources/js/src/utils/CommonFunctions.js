@@ -145,6 +145,10 @@ function getUniqueArray(ar1, ar2, key = "") {
   }
 }
 
+function getCurrentTime(format = 'YYYY-MM-DD HH:mm') {
+  return moment().format(format);
+}
+
 export default {
   getAccessTokenByState,
   getTreeStructure,
@@ -154,4 +158,5 @@ export default {
   generateGreetings,
   getUniqueArray,
   getGroupValues,
+  getCurrentTime,
 };

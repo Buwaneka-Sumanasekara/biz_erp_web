@@ -3,12 +3,42 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Table, Checkbox } from "antd";
 
+import { Globals } from "../../../../constants";
+
+//actions
+import * as ProductActions from "../../../../redux-states/product/actions";
 
 
 const GroupMappingTable = (props) => {
   const { arGroupTableDetails } = props;
+  const [GroupMappingArray, setGroupMappingArray] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+  const [Error, setError] = useState("");
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    onLoadGroupMappingData();
+  }, [props.lastRefreshTime]);
+
+
+
+
+  function onLoadGroupMappingData() {
+    setLoading(true);
+    setError("");
+    props
+      .getAllGroupMapping()
+      .then((res) => {
+        setGroupMappingArray(res);
+      })
+      .catch((er) => {
+        setError(er.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
+
+
 
   function getColumns() {
     const arCol = [];
@@ -33,9 +63,9 @@ const GroupMappingTable = (props) => {
 
   return (
     <Table
-      dataSource={props.data}
+      dataSource={GroupMappingArray}
       columns={columns}
-      loading={props.isLoading}
+      loading={isLoading}
       rowKey={"id"}
       onRow={(record, rowIndex) => {
         return {
@@ -54,22 +84,20 @@ const GroupMappingTable = (props) => {
 
 // Specifies the default values for props:
 GroupMappingTable.defaultProps = {
-  onSubmit: () => {},
-  data:[],
-  isLoading:false
+  lastRefreshTime:"",
+  onLoading:()=>{}
 };
 
 GroupMappingTable.propTypes = {
-  onSubmit: PropTypes.func,
-  data:PropTypes.array,
-  isLoading:PropTypes.bool
+  lastRefreshTime:PropTypes.string,
+  onLoading:PropTypes.func
 };
 
 const mapStateToProps = (state) => ({
   arGroupTableDetails: state.app.arGroupTableDetails,
 });
 const mapDispatchToProps = {
-
+  getAllGroupMapping: ProductActions.getAllGroupMapping,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupMappingTable);

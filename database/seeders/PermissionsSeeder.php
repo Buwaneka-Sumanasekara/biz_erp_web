@@ -50,7 +50,7 @@ class PermissionsSeeder extends Seeder
             
              //1300 - 1399
              ["id"=>1300,"name"=>"Customer Management","display_name"=>"Customers","is_tab"=>1,"parent_id"=>1300,"url_path"=>"","icon"=>"",'order_no'=>1],
-             ["id"=>1301,"name"=>"All Customers","display_name"=>"All Supplier","is_tab"=>1,"parent_id"=>1300,"url_path"=>"","icon"=>"",'order_no'=>1],
+             ["id"=>1301,"name"=>"All Customers","display_name"=>"All Customers","is_tab"=>1,"parent_id"=>1300,"url_path"=>"/customers","icon"=>"",'order_no'=>1],
              
         ];
 

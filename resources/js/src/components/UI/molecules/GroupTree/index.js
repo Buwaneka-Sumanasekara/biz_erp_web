@@ -1,26 +1,53 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { connect } from "react-redux";
 import PropTypes, { func } from "prop-types";
-import { Tree } from "antd";
-import {
-  LoadingOutlined,
-} from '@ant-design/icons';
+import { Tree, Row, Col } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 
 import { CommonFunctions } from "../../../../utils";
+
+//actions
+import * as ProductActions from "../../../../redux-states/product/actions";
 
 const GroupTree = (props) => {
   const [treeData, setTreeData] = useState([]);
   const [expandedKeys, setExpandedKeys] = useState([]);
-  const [currentOpenedParent, setcurrentOpenedParent] = useState("");
+  const [GroupMappingArray, setGroupMappingArray] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+  const [Error, setError] = useState("");
+
+  useEffect(() => {
+    onLoadGroupMappingData();
+  }, [props.lastRefreshTime]);
 
   useEffect(() => {
     generateTree();
-  }, [props.data]);
+  }, [GroupMappingArray]);
+
+  useEffect(() => {
+    props.onLoading(isLoading);
+  }, [isLoading]);
+
+  function onLoadGroupMappingData() {
+    setLoading(true);
+    setError("");
+    props
+      .getAllGroupMapping()
+      .then((res) => {
+        setGroupMappingArray([...GroupMappingArray, ...res]);
+      })
+      .catch((er) => {
+        setError(er.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
 
   function generateTree() {
     setTreeData(
       CommonFunctions.getGroupValues(
-        props.data,
+        GroupMappingArray,
         1,
         [],
         props.arGroupTableDetails.length
@@ -42,7 +69,7 @@ const GroupTree = (props) => {
               origin,
               key,
               CommonFunctions.getGroupValues(
-                props.data,
+                GroupMappingArray,
                 cur_level + 1,
                 child_parents,
                 props.arGroupTableDetails.length,
@@ -81,8 +108,16 @@ const GroupTree = (props) => {
     setExpandedKeys(expandedKeys);
   }
 
-  if(props.isLoading){
-    <LoadingOutlined/>
+  if (isLoading) {
+    return (
+      <Row align={"middle"} justify={"center"}>
+     
+            <Col className={"pt-5"}>
+              <LoadingOutlined />
+            </Col>
+         
+      </Row>
+    );
   }
 
   return (
@@ -98,16 +133,20 @@ const GroupTree = (props) => {
 
 // Specifies the default values for props:
 GroupTree.defaultProps = {
-  isLoading:false
+  lastRefreshTime: "",
+  onLoading: () => {},
 };
 
 GroupTree.propTypes = {
-  isLoading:PropTypes.bool
+  lastRefreshTime: PropTypes.string,
+  onLoading: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
   arGroupTableDetails: state.app.arGroupTableDetails,
 });
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  getAllGroupMapping: ProductActions.getAllGroupMapping,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupTree);

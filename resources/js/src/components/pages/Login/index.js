@@ -16,38 +16,20 @@ const SCREEN_FORGET_PASS = "screen_forgetpass";
 const LoginPage = (props) => {
   let history = useHistory();
   const [ScreenName, setScreenName] = useState(SCREEN_LOGIN);
-  const [isLoading, setLoading] = useState(false);
   const [Error, setError] = useState("");
 
-  useEffect(() => {}, []);
-
-  function onUserLogin(values) {
-    setLoading(true);
-    setError("");
-    props
-      .loginUser({ username: values.username, password: values.password })
-      .then((res) => {
-        history.push("/");
-      })
-      .catch((er) => {
-        setError(er.message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+  function onSuccess() {
+    history.push("/");
   }
 
   return (
     <AuthTemplate>
- 
-   
       <Alert status="error" message={Error} />
-    
+
       <FormLogin
-        onSubmit={(values) => onUserLogin(values)}
-        isLoading={isLoading}
+        onSuccess={() => onSuccess()}
+        onError={(msg) => setError(msg)}
       />
-     
     </AuthTemplate>
   );
 };

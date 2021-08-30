@@ -13,38 +13,16 @@ import {
   GroupMappingCreate,
 } from "../../../UI/molecules";
 
-//actions
-import * as ProductActions from "../../../../redux-states/product/actions";
+
+import { CommonFunctions } from "../../../../utils";
 import { Globals } from "../../../../constants";
 
 const GroupMappingPage = (props) => {
   const { match } = props;
 
-  const [isLoading, setLoading] = useState(false);
-  const [Error, setError] = useState("");
-  const [GroupMappingArray, setGroupMappingArray] = useState([]);
-
-  const [arSelectedGroups, setSelectedGroups] = useState([]);
-
-  useEffect(() => {
-    onLoadGroupMappingData();
-  }, []);
-
-  function onLoadGroupMappingData() {
-    setLoading(true);
-    setError("");
-    props
-      .getAllGroupMapping()
-      .then((res) => {
-        setGroupMappingArray(res);
-      })
-      .catch((er) => {
-        setError(er.message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }
+  const [lastRefreshTime, setLastRefreshTime] = useState("");
+  const [isLoadingTable, setIsLoadingTable] = useState(false);
+  const [isLoadingTree, setIsLoadingTree] = useState(false);
 
   function onValueChangeSelectGroup(val) {
     console.log("onValueChangeSelectGroup", val);
@@ -58,14 +36,14 @@ const GroupMappingPage = (props) => {
             {(value) => (
               <GroupMappingCreate
                 onValuesChange={(val) => onValueChangeSelectGroup(val)}
-                isLoading={isLoading}
                 onSaveSuccess={(msg) => {
                   value.showAlert(Globals.MESSAGE_TYPES.SUCCESS, msg);
-                  onLoadGroupMappingData();
+                  setLastRefreshTime(CommonFunctions.getCurrentTime("X"));
                 }}
                 onSaveError={(msg) =>
                   value.showAlert(Globals.MESSAGE_TYPES.ERROR, msg)
                 }
+                isLoading={isLoadingTable || isLoadingTree}
               />
             )}
           </GlobalAlertContext.Consumer>
@@ -74,10 +52,10 @@ const GroupMappingPage = (props) => {
 
       <Row>
         <Col span={14}>
-          <GroupMappingTable data={GroupMappingArray} isLoading={isLoading} />
+          <GroupMappingTable lastRefreshTime={lastRefreshTime} onLoading={(isLoading)=>setIsLoadingTable(isLoading)} />
         </Col>
-        <Col span={10}>
-          <GroupTree data={GroupMappingArray} isLoading={isLoading} />
+        <Col span={8} offset={2}>
+          <GroupTree lastRefreshTime={lastRefreshTime} onLoading={(isLoading)=>setIsLoadingTree(isLoading)} />
         </Col>
       </Row>
     </DefaultTemplate>
@@ -93,7 +71,7 @@ GroupMappingPage.propTypes = {};
 
 const mapStateToProps = (state) => ({});
 const mapDispatchToProps = {
-  getAllGroupMapping: ProductActions.getAllGroupMapping,
+ 
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupMappingPage);

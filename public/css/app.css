@@ -37344,3 +37344,6 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.ant-btn svg {
+  vertical-align: baseline;
+}
