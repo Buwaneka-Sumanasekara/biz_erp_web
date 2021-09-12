@@ -18,11 +18,9 @@ const GroupCreatePage = (props) => {
   return (
     <DefaultTemplate
       title={`Group - Level ${GroupId}`}
-      extra={[
-        <Button key={1} onClick={() => setModalVisible(true)}>
-          {"New"}
-        </Button>,
-      ]}
+      headerProps={{
+        onPressNew:() => setModalVisible(true),
+      }}
     >
       <GroupListTable GroupNo={GroupId} lastRefreshTime={lastRefreshTime} />
       <GroupCreateModal

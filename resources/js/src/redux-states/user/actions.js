@@ -4,6 +4,15 @@ import { ErrorCodes } from "../../constants";
 
 import * as AppActions from "../app/actions";
 
+
+export function refreshToken(callback=()=>{}){
+  dispatch({
+    type: "USER_SET_AUTHENTICATED",
+    isAuthenticated: false,
+  });
+  return false;
+}
+
 export function loginUser(obj) {
   return async (dispatch, getState) => {
     try {
@@ -62,10 +71,7 @@ export function getUser() {
       const errorObj = error.response.data.error;
 
       if (errorObj.code === ErrorCodes.UNAUTHORIZED) {
-        dispatch({
-          type: "USER_SET_AUTHENTICATED",
-          isAuthenticated: false,
-        });
+        return dispatch(refreshToken(getUser()));
       }else{
         throw new ErrorMessages.CustomError(
           `[getUser][${error.response.status}]${errorObj.code}`,

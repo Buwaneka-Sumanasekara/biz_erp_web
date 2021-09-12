@@ -149,6 +149,10 @@ function getCurrentTime(format = 'YYYY-MM-DD HH:mm') {
   return moment().format(format);
 }
 
+function removeUndefinedData(obj){
+  return JSON.parse(JSON.stringify(obj));
+}
+
 export default {
   getAccessTokenByState,
   getTreeStructure,
@@ -159,4 +163,5 @@ export default {
   getUniqueArray,
   getGroupValues,
   getCurrentTime,
+  removeUndefinedData
 };

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Container, Row, Col } from "react-bootstrap";
 
@@ -9,7 +10,7 @@ import { PageHeader, Alert } from "../../UI/atoms";
 import { GlobalAlertContext } from "../../../context/GlobalAlertContext";
 
 const DefaultTemplate = (props) => {
-  const { children: PassedChildren, title, subTitle, extra } = props;
+  const { children: PassedChildren, title, subTitle, headerProps,enableBack,onBack } = props;
 
   const [msgObj, showMessage] = useState({});
 
@@ -50,7 +51,7 @@ const DefaultTemplate = (props) => {
 
         <Row>
           <Col>
-            <PageHeader title={title} subTitle={subTitle} extra={extra}>
+            <PageHeader title={title} subTitle={subTitle} headerProps={headerProps} enableBack={enableBack} onBack={onBack} >
               {msgObj.type && msgObj.msg && (
                 <Alert status={msgObj.type} message={msgObj.msg} delay={-1} />
               )}
@@ -61,6 +62,21 @@ const DefaultTemplate = (props) => {
       </Container>
     </GlobalAlertContext.Provider>
   );
+};
+
+
+// Specifies the default values for props:
+DefaultTemplate.defaultProps = {
+  enableBack:false
+};
+
+DefaultTemplate.propTypes = {
+  enableBack:PropTypes.bool,
+  headerProps: PropTypes.shape({
+    onPressSave: PropTypes.func,
+    onPressEdit: PropTypes.func,
+    onPressSearch: PropTypes.func,
+  }),
 };
 
 const mapStateToProps = (state) => ({});

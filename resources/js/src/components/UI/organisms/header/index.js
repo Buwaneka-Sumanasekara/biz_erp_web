@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import { PageHeader, Tooltip, Button } from "antd";
 import { TopMenu } from "../../molecules";
-import { PoweroffOutlined } from "@ant-design/icons";
+import CustomIcon from "../../atoms/CustomIcon";
 
 import CommonFunctions from "../../../../utils/CommonFunctions";
 //actions
@@ -38,8 +38,8 @@ const HeaderComponent = (props) => {
       extra={[
         <Tooltip placement="bottom" title={"Logout"}>
           <Button
-            type="primary"
-            icon={<PoweroffOutlined />}
+            type="text"
+            icon={<CustomIcon name={"PowerOff"} style={{ fontSize: "32px"}}/>}
             onClick={() => _onlogout()}
           />
         </Tooltip>,

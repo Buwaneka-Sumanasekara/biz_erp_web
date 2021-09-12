@@ -7,6 +7,10 @@ import GroupMappingTable from "./GroupMappingTable";
 import GroupTree from "./GroupTree";
 import GroupMappingCreate from "./GroupMappingCreate";
 
+
+import SuppliersTable from "./SuppliersTable";
+import FormSupplierCreate from "./FormSupplierCreate";
+
 export {
   FormLogin,
   TopMenu,
@@ -15,4 +19,6 @@ export {
   GroupMappingTable,
   GroupTree,
   GroupMappingCreate,
+  SuppliersTable,
+  FormSupplierCreate
 };
