@@ -1,27 +1,47 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
-import { SuppliersTable, FormSupplierCreate } from "../../../UI/molecules";
+import { SuppliersTable } from "../../../UI/molecules";
 import DefaultTemplate from "../../../templates/default";
 
+import { GlobalPermissionCheckContext } from "../../../../context/GlobalPermissionCheckContext";
+
+import PermissionCodes from "../../../../constants/PermissionCodes";
+//actions
+import * as UserActions from "../../../../redux-states/user/actions";
+import * as AppActions from "../../../../redux-states/app/actions";
+
 const SuppliersAllPage = (props) => {
-  const [isModalVisible, setModalVisible] = useState(false);
+
+
   let history = useHistory();
-  useEffect(() => {}, []);
+  let location = useLocation();
+
 
   function onPressCreateSupplier() {
-    history.push(`/suppliers/create`);
+    props.routeToScreen(history, PermissionCodes.SUPPLIER.CREATE);
   }
-
+ 
   return (
-    <DefaultTemplate
-      title={`Suppliers`}
-      headerProps={{
-        onPressNew: () => onPressCreateSupplier(),
+    <GlobalPermissionCheckContext.Consumer>
+      {(value) => {
+        return (
+          <DefaultTemplate
+            title={`Suppliers`}
+            headerProps={{
+              onPressNew: value.checkPermission(PermissionCodes.SUPPLIER.CREATE)
+                ? () => onPressCreateSupplier()
+                : undefined,
+                onPressSave: value.checkPermission(PermissionCodes.SUPPLIER.ALL)
+                ? () => onPressCreateSupplier()
+                : undefined,
+            }}
+          >
+            <SuppliersTable />
+          </DefaultTemplate>
+        );
       }}
-    >
-      <SuppliersTable />
-    </DefaultTemplate>
+    </GlobalPermissionCheckContext.Consumer>
   );
 };
 
@@ -33,6 +53,9 @@ SuppliersAllPage.defaultProps = {
 SuppliersAllPage.propTypes = {};
 
 const mapStateToProps = (state) => ({});
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  routeToScreen: AppActions.routeToScreen,
+  getPermissionFromAvailable: UserActions.getPermissionFromAvailable,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SuppliersAllPage);

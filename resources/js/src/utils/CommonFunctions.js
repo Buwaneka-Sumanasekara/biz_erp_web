@@ -1,5 +1,6 @@
 import moment from "moment";
 import _ from "lodash";
+import qs from "qs";
 
 async function getAccessTokenByState(getState) {
   let state = await getState();
@@ -8,6 +9,16 @@ async function getAccessTokenByState(getState) {
     return userobj.token;
   } else {
     return "";
+  }
+}
+
+async function getAvailablePermissionsByState(getState) {
+  let state = await getState();
+  let userobj = state.user;
+  if (userobj.permissions !== undefined) {
+    return userobj.permissions;
+  } else {
+    return [];
   }
 }
 
@@ -153,8 +164,47 @@ function removeUndefinedData(obj){
   return JSON.parse(JSON.stringify(obj));
 }
 
+
+function generateQueryParameter(data_obj, allowEmptyStrings = false) {
+  let str = '';
+  for (const key in data_obj) {
+    if (data_obj.hasOwnProperty(key)) {
+      let value = data_obj[key];
+      if (value !== null) {
+        if (Array.isArray(value)) {
+          if (value.length > 0) {
+            if (str !== '') {
+              str += '&';
+            }
+            str += `${key}=${value.join(',')}`;
+          }
+        } else if (value !== undefined && value !== '') {
+          if (str !== '') {
+            str += '&';
+          }
+          str += `${key}=${value}`;
+        } else if (value !== undefined && allowEmptyStrings) {
+          if (str !== '') {
+            str += '&';
+          }
+          str += `${key}=${value}`;
+        }
+      }
+    }
+  }
+  if (str !== '') {
+    str = `?${str}`;
+  }
+  return str;
+}
+
+function getQueryParameterValue(query,key){
+  return qs.parse(query, { ignoreQueryPrefix: true })[key];
+}
+
 export default {
   getAccessTokenByState,
+  getAvailablePermissionsByState,
   getTreeStructure,
   getAllParentsOfTree,
   getAcronym,
@@ -163,5 +213,7 @@ export default {
   getUniqueArray,
   getGroupValues,
   getCurrentTime,
-  removeUndefinedData
+  removeUndefinedData,
+  generateQueryParameter,
+  getQueryParameterValue,
 };

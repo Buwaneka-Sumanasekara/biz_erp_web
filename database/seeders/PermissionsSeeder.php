@@ -47,6 +47,8 @@ class PermissionsSeeder extends Seeder
              //1200 - 1299
             ["id"=>1200,"name"=>"Supplier Management","display_name"=>"Suppliers","is_tab"=>1,"parent_id"=>1200,"url_path"=>"","icon"=>"",'order_no'=>1],
             ["id"=>1201,"name"=>"All Suppliers","display_name"=>"All Supplier","is_tab"=>1,"parent_id"=>1200,"url_path"=>"/suppliers","icon"=>"",'order_no'=>1],
+            ["id"=>1202,"name"=>"Create Supplier","display_name"=>"Create Supplier","is_tab"=>1,"parent_id"=>1200,"url_path"=>"/suppliers/create","icon"=>"",'order_no'=>2],
+            ["id"=>1203,"name"=>"Create Supplier","display_name"=>"Create Supplier","is_tab"=>0,"parent_id"=>1200,"url_path"=>"/suppliers/edit","icon"=>"",'order_no'=>3],
             
              //1300 - 1399
              ["id"=>1300,"name"=>"Customer Management","display_name"=>"Customers","is_tab"=>1,"parent_id"=>1300,"url_path"=>"","icon"=>"",'order_no'=>1],

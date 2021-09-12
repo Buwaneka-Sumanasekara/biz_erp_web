@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Form, Input, Button, Checkbox } from "antd";
@@ -7,7 +7,30 @@ import * as SupplierActions from "../../../../redux-states/supplier/actions";
 const FormSupplierCreate = (props) => {
   const { SupplierId: passedSupplierId } = props;
   const [isLoading, setLoading] = useState(false);
+
+ const formRef = useRef()
+
   const [form] = Form.useForm();
+
+
+
+
+  useEffect(() => {
+     _loadSupplierDetails(); 
+  }, [props.SupplierId]); 
+
+
+  function _loadSupplierDetails(){
+    props.getSpecificSupplier(passedSupplierId).then(res=>{
+        console.log(res);
+        if(formRef.current){
+          formRef.current.setFieldsValue({ name: res.name,contact1:res.contact1,contact2:res.contact2,email_address:res.email_address,active:res.active });
+        }
+        
+    }).catch(er=>{
+      console.log(er);
+    })
+  }
 
   const onFinish = (values) => {
     setLoading(true);
@@ -19,25 +42,30 @@ const FormSupplierCreate = (props) => {
           throw Exception("No supplier Id found");
         }
       }
-
+console.log(values);
       const PromiseMethod = props.isUpdate
         ? props.updateSupplier(values)
         : props.saveSupplier(values);
 
       PromiseMethod.then((res) => {
-        form.resetFields();
+        if(!props.isUpdate){
+          form.resetFields();
+        }
+
         props.onSaveSuccess(
           `Supplier ${props.isUpdate ? `updated` : `saved`} successfully`
         );
       })
         .catch((er) => {
-          onSaveError(er.message);
+          console.log(er);
+          props.onSaveError(er.message);
         })
         .finally(() => {
           setLoading(false);
         });
     } catch (error) {
-      onSaveError(error.message);
+      console.log("error",error);
+      props.onSaveError(error.message);
       setLoading(false);
     }
   };
@@ -56,6 +84,7 @@ const FormSupplierCreate = (props) => {
         initialValues={{ remember: true }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
+        ref={formRef}
       >
         <Form.Item
           label="Name"
@@ -95,17 +124,21 @@ FormSupplierCreate.defaultProps = {
   onSaveSuccess: () => {},
   onSaveError: () => {},
   isUpdate: false,
+  SupplierId:""
 };
 
 FormSupplierCreate.propTypes = {
   onSaveSuccess: PropTypes.func,
   onSaveError: PropTypes.func,
   isUpdate: PropTypes.bool,
+  SupplierId:PropTypes.string
 };
 
 const mapStateToProps = (state) => ({});
 const mapDispatchToProps = {
   saveSupplier: SupplierActions.saveSupplier,
+  updateSupplier:SupplierActions.updateSupplier,
+  getSpecificSupplier:SupplierActions.getSpecificSupplier
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FormSupplierCreate);

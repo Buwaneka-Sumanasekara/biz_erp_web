@@ -4,15 +4,24 @@ import { connect } from "react-redux";
 import { Container, Row, Col } from "react-bootstrap";
 
 import { Header } from "../../UI/organisms";
-import { PageHeader, Alert } from "../../UI/atoms";
+import { PageHeader, Alert, CustomLoading } from "../../UI/atoms";
 
 //context
 import { GlobalAlertContext } from "../../../context/GlobalAlertContext";
 
 const DefaultTemplate = (props) => {
-  const { children: PassedChildren, title, subTitle, headerProps,enableBack,onBack } = props;
+  const {
+    children: PassedChildren,
+    title,
+    subTitle,
+    headerProps,
+    enableBack,
+    onBack,
+    isLoading,
+  } = props;
 
   const [msgObj, showMessage] = useState({});
+  const [permissionCodes, setPermissionCode] = useState({});
 
   useEffect(() => {
     let timer1 = null;
@@ -51,12 +60,22 @@ const DefaultTemplate = (props) => {
 
         <Row>
           <Col>
-            <PageHeader title={title} subTitle={subTitle} headerProps={headerProps} enableBack={enableBack} onBack={onBack} >
-              {msgObj.type && msgObj.msg && (
-                <Alert status={msgObj.type} message={msgObj.msg} delay={-1} />
-              )}
-              {PassedChildren}
-            </PageHeader>
+            {isLoading && <CustomLoading />}
+
+            {!isLoading && (
+              <PageHeader
+                title={title}
+                subTitle={subTitle}
+                headerProps={headerProps}
+                enableBack={enableBack}
+                onBack={onBack}
+              >
+                {msgObj.type && msgObj.msg && (
+                  <Alert status={msgObj.type} message={msgObj.msg} delay={-1} />
+                )}
+                {PassedChildren}
+              </PageHeader>
+            )}
           </Col>
         </Row>
       </Container>
@@ -64,22 +83,25 @@ const DefaultTemplate = (props) => {
   );
 };
 
-
 // Specifies the default values for props:
 DefaultTemplate.defaultProps = {
-  enableBack:false
+  enableBack: false,
+  isLoading: false,
 };
 
 DefaultTemplate.propTypes = {
-  enableBack:PropTypes.bool,
+  enableBack: PropTypes.bool,
   headerProps: PropTypes.shape({
     onPressSave: PropTypes.func,
     onPressEdit: PropTypes.func,
     onPressSearch: PropTypes.func,
   }),
+  isLoading: PropTypes.bool,
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  permissions: state.user.permissions,
+});
 const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(DefaultTemplate);

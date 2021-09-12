@@ -27,6 +27,29 @@ export function getAllSuppliers() {
   };
 }
 
+export function getSpecificSupplier(id) {
+  return async (dispatch, getState) => {
+    try {
+      const token = await CommonFunctions.getAccessTokenByState(getState);
+      const apiResponse = await SupplierRepository.getSpecific(token,id);
+      const Supplier = apiResponse.data["data"];
+      return Supplier;
+    } catch (error) {
+      const errorObj = error.response.data.error;
+
+      if (errorObj.code === ErrorCodes.UNAUTHORIZED) {
+        return dispatch(UserActions.refreshToken(getSpecificSupplier(id)));
+      } else {
+        throw new ErrorMessages.CustomError(
+          `[getSpecificSupplier][${error.response.status}]${errorObj.code}`,
+          `${errorObj.message}`,
+          "src/redux-states/supplier/actions.js:getSpecificSupplier"
+        );
+      }
+    }
+  };
+}
+
 export function saveSupplier(obj) {
   return async (dispatch, getState) => {
     try {

@@ -3,14 +3,62 @@ import { ErrorMessages, CommonFunctions } from "../../utils";
 import { ErrorCodes } from "../../constants";
 
 import * as AppActions from "../app/actions";
+import { ExceptionMap } from "antd/lib/result";
 
+export function refreshToken(callback = () => {}) {
+  return (dispatch, getState) => {
+    dispatch({
+      type: "USER_SET_AUTHENTICATED",
+      isAuthenticated: false,
+    });
+    return false;
+  };
+}
 
-export function refreshToken(callback=()=>{}){
-  dispatch({
-    type: "USER_SET_AUTHENTICATED",
-    isAuthenticated: false,
-  });
-  return false;
+export function checkPermissionAvailable(permid, allPermissions = []) {
+  return async (dispatch, getState) => {
+    try {
+      let arPermissionsVal = [];
+      if (allPermissions.length > 0) {
+        arPermissionsVal = allPermissions;
+      } else {
+        arPermissionsVal = await CommonFunctions.getAvailablePermissionsByState(
+          getState
+        );
+      }
+
+      const found = arPermissionsVal.find((element) => element.id == permid);
+      return found !== undefined;
+    } catch (error) {
+      return false;
+    }
+  };
+}
+
+export function getPermissionFromAvailable(arPermissions = []) {
+  return async (dispatch, getState) => {
+    try {
+      const arPermissionsVal =
+        await CommonFunctions.getAvailablePermissionsByState(getState);
+
+      const objValid = {};
+
+      for (const perm_id of arPermissions) {
+        const found = arPermissionsVal.find((element) => element.id == perm_id);
+        if (found) {
+          objValid[perm_id] = found;
+        }
+      }
+
+      if (Object.keys(objValid).length > 0) {
+        return objValid;
+      } else {
+        throw new Exception("No items found");
+      }
+    } catch (error) {
+      return undefined;
+    }
+  };
 }
 
 export function loginUser(obj) {
@@ -45,23 +93,28 @@ export function loginUser(obj) {
 export function getUser() {
   return async (dispatch, getState) => {
     try {
- 
       const token = await CommonFunctions.getAccessTokenByState(getState);
       const apiResponse = await UserRepository.user(token);
 
       const userData = apiResponse.data;
-      const ar_menu_permissions=userData.permissions.filter(perm => perm.is_tab==1);
-
+      const ar_menu_permissions = userData.permissions.filter(
+        (perm) => perm.is_tab == 1
+      );
 
       dispatch({
         type: "USER_SET_PROFILE",
         permissions: userData.permissions,
-        profile:userData.user,
-        permissions_tree:CommonFunctions.getTreeStructure(userData.permissions),
-        permissions_uimenu_tree:CommonFunctions.getTreeStructure(ar_menu_permissions)
+        profile: userData.user,
+        permissions_tree: CommonFunctions.getTreeStructure(
+          userData.permissions
+        ),
+        permissions_uimenu_tree:
+          CommonFunctions.getTreeStructure(ar_menu_permissions),
       });
 
-      dispatch(AppActions.appsetGroupSettings(userData.app_settings.group_tables));
+      dispatch(
+        AppActions.appsetGroupSettings(userData.app_settings.group_tables)
+      );
       dispatch({
         type: "USER_SET_AUTHENTICATED",
         isAuthenticated: true,
@@ -72,15 +125,13 @@ export function getUser() {
 
       if (errorObj.code === ErrorCodes.UNAUTHORIZED) {
         return dispatch(refreshToken(getUser()));
-      }else{
+      } else {
         throw new ErrorMessages.CustomError(
           `[getUser][${error.response.status}]${errorObj.code}`,
           `${errorObj.message}`,
           "src/redux-states/user/actions.js:getUser"
         );
       }
-
-     
     }
   };
 }

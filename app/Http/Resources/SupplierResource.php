@@ -21,6 +21,7 @@ class SupplierResource extends JsonResource
             'contact1' => $this->contact1,
             'contact2' => $this->contact2,
             'active' => ($this->active?true:false),
+            'can_remove' => ($this->can_remove?true:false),
         ];
     }
 

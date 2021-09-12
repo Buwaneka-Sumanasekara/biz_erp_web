@@ -54,7 +54,7 @@ const PageHeaderComponent = (props) => {
         arExtraButton.push(
           <Button
             type={"text"}
-            key={1}
+            key={0}
             onClick={() => headerProps.onPressSearch()}
             icon={<CustomIcon name={"Search"} style={{ fontSize: "32px" }} />}
           />
@@ -74,8 +74,8 @@ const PageHeaderComponent = (props) => {
         arExtraButton.push(
           <Button
             type={"text"}
-            key={1}
-            onClick={() => headerProps.onPressNew()}
+            key={2}
+            onClick={() => headerProps.onPressSave()}
             icon={<CheckCircleFilled style={{ fontSize: "32px" }} />}
           />
         );
@@ -84,8 +84,8 @@ const PageHeaderComponent = (props) => {
         arExtraButton.push(
           <Button
             type={"text"}
-            key={1}
-            onClick={() => headerProps.onPressNew()}
+            key={3}
+            onClick={() => headerProps.onPressEdit()}
             icon={<EditFilled style={{ fontSize: "32px" }} />}
           />
         );

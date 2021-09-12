@@ -92,12 +92,24 @@ class SupplierController extends Controller
             $supplier = SmSupplier::find($id);
             if($supplier!==null && $supplier->canRemove()){
 
-                    $supplier->name= $request->get('name');
-                    $supplier->active= $request->get('active');
-                    $supplier->contact1= $request->get('contact1');
-                    $supplier->contact2= $request->get('contact2');
-                    $supplier->email_address= $request->get('email_address');
-                     
+                    if($request->get('name')){
+                        $supplier->name= $request->get('name');
+                    }
+  
+                        $supplier->active= $request->get('active');
+                    
+                    if($request->get('contact1')){
+                        $supplier->contact1= $request->get('contact1');
+                    }
+                    if($request->get('contact2')){
+                        $supplier->contact2= $request->get('contact2');
+                    }
+                    if($request->get('email_address')){
+                        $supplier->email_address= $request->get('email_address');
+                    }
+                  
+                   
+                     $supplier->save();
                     return new GeneralResource((object)array("message"=>"Supplier updated successfully"));
               
             }else{
@@ -110,5 +122,15 @@ class SupplierController extends Controller
            } 
     }
 
+
+    public function getSupplier(Request $request,String $id="")
+    {
+          try {  
+            return new SupplierResource(SmSupplier::findOrFail($id));
+          } catch (\Exception $e) {
+            return (new ErrorResource($e));
+           } 
+    }
+    
 
 }
