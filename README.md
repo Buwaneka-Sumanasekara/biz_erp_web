@@ -1,6 +1,6 @@
 # BIZ ERP
 
-## install steps
+## install steps (Fresh)
 
 - composer install
 - npm install 
@@ -13,6 +13,12 @@
 - npm run prod
 
 php artisan migrate:refresh --seed
+
+---------------------------------------------------------------------------
+
+## For new updates only
+
+php artisan migrate
 
 
 ## auto load files
