@@ -9,7 +9,7 @@ class PmUomGroupHasPmUom extends Model
 {
     use HasFactory;
 
-    protected $table = 'uom_group_has_pm_uom';
+    protected $table = 'pm_uom_group_has_pm_uom';
     protected $fillable = ['pm_uom_group_id','pm_uom_id','vol_of_smallest_uom'];
     public $incrementing = false;
 }

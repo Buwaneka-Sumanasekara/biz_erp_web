@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SmSupplier extends Model
 {   
     protected $table = 'sm_supplier';
+    protected $primaryKey = 'id';
     protected $fillable = ['id','name','active','contact1','contact2','email_address','can_remove'];
     public $incrementing = false;
     use HasFactory;

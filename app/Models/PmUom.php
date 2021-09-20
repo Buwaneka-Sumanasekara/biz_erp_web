@@ -8,7 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class PmUom extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'id';
+    protected $keyType = 'string';
+    
     protected $table = 'pm_uom';
-    protected $fillable = ['id','name','active'];
+    protected $fillable = ['id','name','active','sym'];
     public $incrementing = false;
 }

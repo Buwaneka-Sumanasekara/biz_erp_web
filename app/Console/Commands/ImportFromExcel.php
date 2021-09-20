@@ -43,7 +43,7 @@ class ImportFromExcel extends Command
         $mode=$this->argument('mode');
 
         $this->output->title('Starting importing all data');
-        (new AllImports($mode))->withOutput($this->output)->import('public/imports/NHItems.xlsx');
+        (new AllImports($mode))->withOutput($this->output)->import('public/imports/Import_BIZ.xlsx');
         $this->output->success('Import all data successful');
         
     }

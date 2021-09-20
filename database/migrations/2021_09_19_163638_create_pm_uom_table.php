@@ -17,6 +17,7 @@ class CreatePmUomTable extends Migration
             $table->string('id',20)->primary();
             $table->string('name',60);
             $table->tinyInteger('active')->default(1);
+            $table->string('sym',5)->nullable()->default("");
             $table->timestamps();
         });
     }

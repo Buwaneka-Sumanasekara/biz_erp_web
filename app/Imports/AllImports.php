@@ -39,6 +39,22 @@ class AllImports implements WithMultipleSheets,WithProgressBar,SkipsUnknownSheet
             $arImports = array_merge($arImports,[
                 'ITEMS' => (new GroupMapping())->withOutput($this->output),
             ]);      
+        }if($this->Mode=="all" || $this->Mode=="suppliers"){
+            $arImports = array_merge($arImports,[
+                'SUPPLIERS' => (new Suppliers())->withOutput($this->output),
+            ]);      
+        }if($this->Mode=="all" || $this->Mode=="uom"){
+            $arImports = array_merge($arImports,[
+                'UOM' => (new UOM())->withOutput($this->output),
+            ]);      
+        }if($this->Mode=="all" || $this->Mode=="uom-group"){
+            $arImports = array_merge($arImports,[
+                'UOM_GROUP' => (new UOMGroup())->withOutput($this->output),
+            ]);      
+        }if($this->Mode=="all" || $this->Mode=="uom-has-group"){
+            $arImports = array_merge($arImports,[
+                'UOM_MAPPING' => (new UOMHasGroup())->withOutput($this->output),
+            ]);      
         }
 
         return $arImports;

@@ -9,6 +9,8 @@ use App\Models\PmGroup5;
 use App\Models\PmGroup6;
 
 use App\Models\SmSupplier;
+use App\Models\PmUom;
+use App\Models\PmUomGroup;
 
 class CommonHelper
 {
@@ -63,9 +65,37 @@ class CommonHelper
 
     public static function getNextSupplierId(): ?string
     {
-        $Numberlength=3;//without "S"
+        $Numberlength=4;//without "S"
         $lastId=SmSupplier::max("id");
         $nextNo="S";
+        if($lastId===null){
+           $nextNo=$nextNo."".str_pad("0",$Numberlength,"0",STR_PAD_LEFT);     
+        }else{
+            $WithoutPrefix=substr($lastId,2);
+            $nextNo=$nextNo."".self::getSufixNumbers($WithoutPrefix,$Numberlength);   
+        }
+        return $nextNo;
+    }
+
+    public static function getNextUOMId(): ?string
+    {
+        $Numberlength=3;//without "U"
+        $lastId=PmUom::max("id");
+        $nextNo="U";
+        if($lastId===null){
+           $nextNo=$nextNo."".str_pad("0",$Numberlength,"0",STR_PAD_LEFT);     
+        }else{
+            $WithoutPrefix=substr($lastId,2);
+            $nextNo=$nextNo."".self::getSufixNumbers($WithoutPrefix,$Numberlength);   
+        }
+        return $nextNo;
+    }
+
+    public static function getNextUOMGroupId(): ?string
+    {
+        $Numberlength=3;//without "UG"
+        $lastId=PmUomGroup::max("id");
+        $nextNo="UG";
         if($lastId===null){
            $nextNo=$nextNo."".str_pad("0",$Numberlength,"0",STR_PAD_LEFT);     
         }else{
