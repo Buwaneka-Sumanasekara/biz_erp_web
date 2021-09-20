@@ -81,7 +81,7 @@ class CommonHelper
     {
         $Numberlength=3;//without "U"
         $lastId=PmUom::max("id");
-        $nextNo="U";
+        $nextNo="";
         if($lastId===null){
            $nextNo=$nextNo."".str_pad("0",$Numberlength,"0",STR_PAD_LEFT);     
         }else{
@@ -95,7 +95,7 @@ class CommonHelper
     {
         $Numberlength=3;//without "UG"
         $lastId=PmUomGroup::max("id");
-        $nextNo="UG";
+        $nextNo="";
         if($lastId===null){
            $nextNo=$nextNo."".str_pad("0",$Numberlength,"0",STR_PAD_LEFT);     
         }else{
