@@ -6,6 +6,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\LocationController;
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +53,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/', [SupplierController::class, 'createSupplier']);
         Route::put('/{id}', [SupplierController::class, 'updateSupplier']);
         Route::get('/{id}', [SupplierController::class, 'getSupplier']);
+        
+    });
+
+    Route::prefix("locations")->group(function () {
+        Route::get('/', [LocationController::class, 'getLocationList']);
+        Route::get('/{type}', [LocationController::class, 'getLocationList'])->where('type', 'active');
+        Route::post('/', [LocationController::class, 'createLocation']);
+        Route::put('/{id}', [LocationController::class, 'updateLocation']);
         
     });
 

@@ -9,6 +9,7 @@ use App\Models\PmGroup5;
 use App\Models\PmGroup6;
 
 use App\Models\SmSupplier;
+use App\Models\StkmLocations;
 
 class CommonHelper
 {
@@ -75,6 +76,18 @@ class CommonHelper
         return $nextNo;
     }
 
-  
+    public static function getNextLocationId(): ?string
+    {
+        $Numberlength=3;//without "S"
+        $lastId=StkmLocations::max("id");
+        $nextNo="";
+        if($lastId===null){
+           $nextNo=$nextNo."".str_pad("0",$Numberlength,"0",STR_PAD_LEFT);     
+        }else{
+            $WithoutPrefix=substr($lastId,2);
+            $nextNo=$nextNo."".self::getSufixNumbers($WithoutPrefix,$Numberlength);   
+        }
+        return $nextNo;
+    }
    
 }
