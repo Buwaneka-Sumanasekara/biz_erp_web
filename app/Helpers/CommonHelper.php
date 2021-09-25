@@ -9,7 +9,10 @@ use App\Models\PmGroup5;
 use App\Models\PmGroup6;
 
 use App\Models\SmSupplier;
+use App\Models\PmUom;
+use App\Models\PmUomGroup;
 use App\Models\StkmLocations;
+
 
 class CommonHelper
 {
@@ -64,7 +67,7 @@ class CommonHelper
 
     public static function getNextSupplierId(): ?string
     {
-        $Numberlength=3;//without "S"
+        $Numberlength=4;//without "S"
         $lastId=SmSupplier::max("id");
         $nextNo="S";
         if($lastId===null){
@@ -76,6 +79,20 @@ class CommonHelper
         return $nextNo;
     }
 
+      public static function getNextUOMId(): ?string
+    {
+        $Numberlength=3;
+        $lastId=PmUom::max("id");
+        $nextNo="";
+        if($lastId===null){
+           $nextNo=$nextNo."".str_pad("0",$Numberlength,"0",STR_PAD_LEFT);     
+        }else{
+            $WithoutPrefix=substr($lastId,2);
+            $nextNo=$nextNo."".self::getSufixNumbers($WithoutPrefix,$Numberlength);   
+        }
+        return $nextNo;
+    }
+      
     public static function getNextLocationId(): ?string
     {
         $Numberlength=3;//without "S"
@@ -89,5 +106,22 @@ class CommonHelper
         }
         return $nextNo;
     }
+
+
+    public static function getNextUOMGroupId(): ?string
+    {
+        $Numberlength=3;
+        $lastId=PmUomGroup::max("id");
+        $nextNo="";
+        if($lastId===null){
+           $nextNo=$nextNo."".str_pad("0",$Numberlength,"0",STR_PAD_LEFT);     
+        }else{
+            $WithoutPrefix=substr($lastId,2);
+            $nextNo=$nextNo."".self::getSufixNumbers($WithoutPrefix,$Numberlength);   
+        }
+        return $nextNo;
+    }
+
+
    
 }

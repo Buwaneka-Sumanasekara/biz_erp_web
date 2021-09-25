@@ -9,6 +9,7 @@ class PmGroup1 extends Model
 {
     use HasFactory;
     protected $table = 'pm_group1';
+    protected $primaryKey = 'id';
     protected $fillable = ['id','name','active'];
     public $incrementing = false;
 

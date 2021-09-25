@@ -13,7 +13,7 @@ class CreateUomGroupHasPmUomTable extends Migration
      */
     public function up()
     {
-        Schema::create('uom_group_has_pm_uom', function (Blueprint $table) {
+        Schema::create('pm_uom_group_has_pm_uom', function (Blueprint $table) {
             $table->string('pm_uom_group_id',50);
             $table->string('pm_uom_id',20);
             $table->double('vol_of_smallest_uom');
@@ -30,6 +30,6 @@ class CreateUomGroupHasPmUomTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('uom_group_has_pm_uom');
+        Schema::dropIfExists('pm_uom_group_has_pm_uom');
     }
 }
